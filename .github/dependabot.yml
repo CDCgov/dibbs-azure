@@ -1,0 +1,23 @@
+
+version: 2
+updates:
+
+  - package-ecosystem: "github-actions"
+    # this checks the .github/workflows directory by default
+    # any other directory for github-actions seems broken at the moment
+    directory: "/"
+    open-pull-requests-limit: 2
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    reviewers:
+      - "rin-skylight"
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform"
+    open-pull-requests-limit: 2
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    reviewers:
+      - "rin-skylight"
