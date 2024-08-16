@@ -90,5 +90,5 @@ resource "azurerm_container_app" "aca_apps" {
 
   workload_profile_name = local.workload_profile
 
-  depends_on = [ time_sleep.wait_for_ce_apps ]
+  depends_on = [ time_sleep.wait_for_app_images ]
 }
