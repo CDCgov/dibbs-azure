@@ -1,26 +1,3 @@
-locals {
-  /*backend_address_pool_name      = "${var.vnet_name}-beap"
-  frontend_port_name             = "${var.vnet_name}-feport"
-  frontend_ip_configuration_name = "${var.vnet_name}-feip"
-  http_setting_name              = "${var.vnet_name}-be-htst"
-  listener_name                  = "${var.vnet_name}-httplstn"
-  request_routing_rule_name      = "${var.vnet_name}-rqrt"*/
-
-  http_listener   = "${local.name}-http"
-  https_listener  = "${local.name}-https"
-  frontend_config = "${local.name}-config"
-  redirect_rule   = "${local.name}-redirect"
-
-  orchestration_backend_pool          = "${local.name}-be-orchestration"
-  orchestration_backend_http_setting  = "${local.name}-be-orchestration-http"
-  orchestration_backend_https_setting = "${local.name}-be-orchestration-https"
-  ecr_viewer_pool                     = "${local.name}-be-ecr_viewer"
-  ecr_viewer_http_setting             = "${local.name}-be-api-ecr_viewer-http"
-  ecr_viewer_https_setting            = "${local.name}-be-api-ecr_viewer-https"
-
-  #networkContributorRole         = "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4d97b98b-1d4f-4787-a291-c67834d212e7')]"
-}
-
 resource "azurerm_private_dns_zone" "aca" {
   name                = "${local.name}.privatelink.azurecontainer.io"
   resource_group_name = var.resource_group_name
@@ -111,7 +88,7 @@ resource "azurerm_application_gateway" "load_balancer" {
     }
   }
 
-  probe {
+probe {
     name                                      = "be-https"
     interval                                  = 10
     path                                      = "/actuator/health"
@@ -183,14 +160,14 @@ resource "azurerm_application_gateway" "load_balancer" {
     frontend_ip_configuration_name = local.frontend_config
     frontend_port_name             = local.https_listener
     protocol                       = "Https"
-    //ssl_certificate_name           = data.azurerm_key_vault_certificate.wildcard_simplereport_gov.name
+    ssl_certificate_name           = data.azurerm_key_vault_certificate.wildcard_simplereport_gov.name
   }
 
-  /*
+  
   ssl_certificate {
     name                = data.azurerm_key_vault_certificate.wildcard_simplereport_gov.name
     key_vault_secret_id = data.azurerm_key_vault_certificate.wildcard_simplereport_gov.secret_id
-  } */
+  }
 
   ssl_policy {
     policy_name = "AppGwSslPolicy20170401S"
@@ -224,7 +201,7 @@ resource "azurerm_application_gateway" "load_balancer" {
     http_listener_name         = local.https_listener
     backend_address_pool_name  = local.orchestration_backend_pool
     backend_http_settings_name = local.orchestration_backend_https_setting
-    url_path_map_name          = "${var.env}-urlmap"
+    url_path_map_name          = "${local.name}-urlmap"
   }
 
   //Should we default to orchestrator for the static pool?
@@ -232,7 +209,7 @@ resource "azurerm_application_gateway" "load_balancer" {
     name                               = "${local.name}-urlmap"
     default_backend_address_pool_name  = local.orchestration_backend_pool
     default_backend_http_settings_name = local.orchestration_backend_https_setting
-    default_rewrite_rule_set_name      = "dibbs-routing"
+    default_rewrite_rule_set_name      = "ecr-viewer-routing"
 
     path_rule {
       name                       = "orchestration"
@@ -256,10 +233,10 @@ resource "azurerm_application_gateway" "load_balancer" {
   }
 
   rewrite_rule_set {
-    name = "ecr_viewer-routing"
+    name = "ecr-viewer-routing"
 
     rewrite_rule {
-      name          = "ecr_viewer-wildcard"
+      name          = "ecr-viewer-wildcard"
       rule_sequence = 100
       condition {
         ignore_case = true
@@ -278,16 +255,16 @@ resource "azurerm_application_gateway" "load_balancer" {
     }
   }
 
-  /*rewrite_rule_set {
-    name = "simple-report-routing"
+  rewrite_rule_set {
+    name = "orchestration-routing"
 
     rewrite_rule {
-      name          = "api-wildcard"
-      rule_sequence = 101
+      name          = "orchestration-wildcard"
+      rule_sequence = 100
       condition {
         ignore_case = true
         negate      = false
-        pattern     = ".*api/(.*)"
+        pattern     = ".*/orchestration(.*)"
         variable    = "var_uri_path"
       }
 
@@ -299,17 +276,7 @@ resource "azurerm_application_gateway" "load_balancer" {
         query_string = "{var_query_string}"
       }
     }
-
-    rewrite_rule {
-      name          = "HSTS"
-      rule_sequence = 101
-
-      response_header_configuration {
-        header_name  = "Strict-Transport-Security"
-        header_value = "max-age=31536000"
-      }
-    }
-  }*/
+  }
 
   depends_on = [
     azurerm_public_ip.aca_ingress,
