@@ -9,7 +9,6 @@ resource "azurerm_resource_group" "rg" {
   }
 }
 
-#tfsec:ignore:azure-keyvault-specify-network-acl:exp:2024-08-15
 resource "azurerm_key_vault" "kv" {
   name                        = "${var.team}${var.project}${var.env}kv"
   location                    = var.location

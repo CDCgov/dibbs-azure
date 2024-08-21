@@ -140,27 +140,6 @@ locals {
       target_port = 8080
     }
   }
-  /*
-  path_rules = [
-    {
-      name                       = "orchestration"
-      paths                      = ["/api/*", "/api"]
-      backend_address_pool_name  = local.orchestration_backend_pool
-      backend_http_settings_name = local.orchestration_backend_https_setting
-      // this is the default, why would we set it again?
-      // because if we don't do this we get 404s on API calls
-      rewrite_rule_set_name = "orchestration-routing"
-    },
-    {
-      name                       = "ecr-viewer"
-      paths                      = ["/api/*", "/api"]
-      backend_address_pool_name  = local.ecr_viewer_backend_pool
-      backend_http_settings_name = local.ecr_viewer_backend_https_setting
-      // this is the default, why would we set it again?
-      // because if we don't do this we get 404s on API calls
-      rewrite_rule_set_name = "ecr-viewer-routing"
-    }
-  ]*/
 
   http_listener   = "${local.name}-http"
   https_listener  = "${local.name}-https"
@@ -175,6 +154,4 @@ locals {
   ecr_viewer_backend_pool             = "${local.name}-be-ecr_viewer"
   ecr_viewer_backend_http_setting     = "${local.name}-be-api-ecr_viewer-http"
   ecr_viewer_backend_https_setting    = "${local.name}-be-api-ecr_viewer-https"
-
-  #networkContributorRole         = "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4d97b98b-1d4f-4787-a291-c67834d212e7')]"
 }

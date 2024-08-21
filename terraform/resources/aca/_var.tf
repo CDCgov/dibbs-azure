@@ -53,7 +53,7 @@ variable "acr_password" {
   type        = string
 }
 
-variable "vnet_name" {
+variable "vnet_id" {
   description = "The name of the virtual network to which the ACA gateway will be assigned"
   type        = string
 }
@@ -73,39 +73,6 @@ variable "tags" {
   default     = {}
 }
 
-#-- Networking --#
-variable "orchestration_ip_addresses" {
-  type    = list(string)
-  default = []
-}
-
-variable "ecr_viewer_ip_addresses" {
-  type    = list(string)
-  default = []
-}
-
-#--- Azure API Management ---#
-variable "activate_apim" {
-  description = "Flag to determine if Azure API Management should be provisioned"
-  type        = bool
-  default     = false
-}
-variable "apim_sku_name" {
-  description = "The SKU of the API Management instance"
-  type        = string
-  default     = "Consumption_0"
-}
-
-variable "publisher_name" {
-  description = "The name of the publisher for the API Management instance"
-  type        = string
-}
-
-variable "publisher_email" {
-  description = "The email address of the publisher for the API Management instance"
-  type        = string
-}
-
 variable "dibbs_version" {
   description = "The version of the DIBBs services to deploy. Can be overridden if building blocks are on different versions."
   type        = string
@@ -116,21 +83,3 @@ variable "ghcr_string" {
   type        = string
   default     = "ghcr.io/cdcgov/phdi/"
 }
-
-/*variable "service_data" {
-  type = map(object({
-    name    = string
-    cpu     = number
-    memory  = string
-    image   = string
-    is_public = bool
-    path_rule = object({
-      name                       = string
-      paths                      = list(string)
-      backend_address_pool_name  = string
-      backend_http_settings_name = string
-      rewrite_rule_set_name      = string
-    })
-  }))
-  description = "Data for the DIBBs services to be deployed in the Azure Container Apps environment"
-} */

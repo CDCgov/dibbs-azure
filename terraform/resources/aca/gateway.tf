@@ -1,6 +1,21 @@
-resource "azurerm_private_dns_zone" "aca" {
-  name                = "${local.name}.privatelink.azurecontainer.io"
+resource "azurerm_private_dns_zone" "aca_zone" {
+  name                = azurerm_container_app_environment.ce_apps.default_domain
   resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_private_dns_a_record" "aca_record" {
+  name                = "*"
+  zone_name           = azurerm_private_dns_zone.aca_zone.name
+  resource_group_name = var.resource_group_name
+  ttl                 = 300
+  records             = [azurerm_container_app_environment.ce_apps.static_ip_address]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "aca_vnet_link" {
+  name                = "${local.name}-vnet-link"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.aca_zone.name
+  virtual_network_id    = var.vnet_id
 }
 
 resource "azurerm_public_ip" "aca_ingress" {
@@ -69,7 +84,6 @@ resource "azurerm_application_gateway" "load_balancer" {
   backend_address_pool {
     name         = local.aca_backend_pool
     ip_addresses = [azurerm_container_app_environment.ce_apps.static_ip_address]
-    //fqdns = [azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn]
   }
 
   backend_http_settings {
@@ -80,21 +94,18 @@ resource "azurerm_application_gateway" "load_balancer" {
     protocol              = "Http"
     request_timeout       = 60
     host_name             = azurerm_container_app_environment.ce_apps.default_domain
-    //probe_name            = "orchestration-probe"
   }
 
   # --- Orchestration Settings
 
   backend_address_pool {
     name = local.orchestration_backend_pool
-    //ip_addresses = [azurerm_container_app_environment.ce_apps.static_ip_address]
     fqdns = [azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn]
   }
 
   backend_http_settings {
     name                  = local.orchestration_backend_http_setting
     cookie_based_affinity = "Disabled"
-    //path                  = "/"
     port            = 80
     protocol        = "Http"
     request_timeout = 60
@@ -121,7 +132,6 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   backend_address_pool {
     name = local.ecr_viewer_backend_pool
-    //ip_addresses = [azurerm_container_app_environment.ce_apps.static_ip_address]
     fqdns = [azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn]
   }
 

@@ -31,14 +31,11 @@ module "container_apps" {
   location            = local.location
   resource_group_name = module.foundations.resource_group_name
 
-  publisher_name  = "" # Add the missing attribute "publisher_name" here
-  publisher_email = "" # Add the missing attribute "publisher_email" here
-
   key_vault_id = module.foundations.key_vault_id
 
   aca_subnet_id   = module.networking.subnet_aca_id
   appgw_subnet_id = module.networking.subnet_appgw_id
-  vnet_name       = module.networking.network.name
+  vnet_id       = module.networking.network.id
 
   acr_url      = module.foundations.acr_url
   acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password
