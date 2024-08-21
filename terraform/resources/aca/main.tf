@@ -25,7 +25,7 @@ resource "azurerm_container_app_environment" "ce_apps" {
     minimum_count         = 1
   }
 
-  internal_load_balancer_enabled = true
+  internal_load_balancer_enabled = false
 }
 
 /*
@@ -33,8 +33,8 @@ resource "azurerm_container_app_environment" "ce_apps" {
   of the images before they are available to be read by the Azure Container Apps environment.
 */
 resource "time_sleep" "wait_for_app_images" {
-  depends_on = [docker_registry_image.aca_image]
-  create_duration      = "60s"
+  depends_on      = [docker_registry_image.aca_image]
+  create_duration = "60s"
 }
 
 resource "azurerm_container_app" "aca_apps" {
@@ -65,8 +65,8 @@ resource "azurerm_container_app" "aca_apps" {
   }
 
   ingress {
-    allow_insecure_connections = false
-    external_enabled           = false
+    allow_insecure_connections = true
+    external_enabled           = each.value.is_public
     target_port                = each.value.target_port
     transport                  = "auto"
 
@@ -85,10 +85,10 @@ resource "azurerm_container_app" "aca_apps" {
 
   secret {
     name  = "acr-password-secret"
-    value = "${var.acr_password}"
+    value = var.acr_password
   } //TODO: Delete this in favor of key vault reference?
 
   workload_profile_name = local.workload_profile
 
-  depends_on = [ time_sleep.wait_for_app_images ]
+  depends_on = [time_sleep.wait_for_app_images]
 }

@@ -140,7 +140,7 @@ locals {
       target_port = 8080
     }
   }
-
+  /*
   path_rules = [
     {
       name                       = "orchestration"
@@ -154,25 +154,27 @@ locals {
     {
       name                       = "ecr-viewer"
       paths                      = ["/api/*", "/api"]
-      backend_address_pool_name  = local.ecr_viewer_pool
-      backend_http_settings_name = local.ecr_viewer_https_setting
+      backend_address_pool_name  = local.ecr_viewer_backend_pool
+      backend_http_settings_name = local.ecr_viewer_backend_https_setting
       // this is the default, why would we set it again?
       // because if we don't do this we get 404s on API calls
       rewrite_rule_set_name = "ecr-viewer-routing"
     }
-  ]
+  ]*/
 
   http_listener   = "${local.name}-http"
   https_listener  = "${local.name}-https"
   frontend_config = "${local.name}-config"
   redirect_rule   = "${local.name}-redirect"
 
+  aca_backend_pool                    = "${local.name}-be-aca"
+  aca_backend_http_setting            = "${local.name}-be-aca-http"
   orchestration_backend_pool          = "${local.name}-be-orchestration"
   orchestration_backend_http_setting  = "${local.name}-be-orchestration-http"
   orchestration_backend_https_setting = "${local.name}-be-orchestration-https"
-  ecr_viewer_pool                     = "${local.name}-be-ecr_viewer"
-  ecr_viewer_http_setting             = "${local.name}-be-api-ecr_viewer-http"
-  ecr_viewer_https_setting            = "${local.name}-be-api-ecr_viewer-https"
+  ecr_viewer_backend_pool             = "${local.name}-be-ecr_viewer"
+  ecr_viewer_backend_http_setting     = "${local.name}-be-api-ecr_viewer-http"
+  ecr_viewer_backend_https_setting    = "${local.name}-be-api-ecr_viewer-https"
 
   #networkContributorRole         = "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4d97b98b-1d4f-4787-a291-c67834d212e7')]"
 }

@@ -36,8 +36,9 @@ module "container_apps" {
 
   key_vault_id = module.foundations.key_vault_id
 
-  aca_subnet_id = module.networking.subnet_aca_id
-  vnet_name     = module.networking.network.name
+  aca_subnet_id   = module.networking.subnet_aca_id
+  appgw_subnet_id = module.networking.subnet_appgw_id
+  vnet_name       = module.networking.network.name
 
   acr_url      = module.foundations.acr_url
   acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password

@@ -33,6 +33,11 @@ variable "aca_subnet_id" {
   description = "The ID of the subnet to connect the Azure Container Apps environment to"
 }
 
+variable "appgw_subnet_id" {
+  type        = string
+  description = "The ID of the subnet to connect the App Gateway to"
+}
+
 variable "acr_url" {
   description = "The URL of the Azure Container Registry"
   type        = string
@@ -109,7 +114,7 @@ variable "dibbs_version" {
 variable "ghcr_string" {
   description = "The string to use for the source GitHub Container Registry"
   type        = string
-  default = "ghcr.io/cdcgov/phdi/"
+  default     = "ghcr.io/cdcgov/phdi/"
 }
 
 /*variable "service_data" {
