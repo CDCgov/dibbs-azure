@@ -106,6 +106,7 @@ resource "azurerm_application_gateway" "load_balancer" {
   backend_http_settings {
     name                  = local.orchestration_backend_http_setting
     cookie_based_affinity = "Disabled"
+    path = "/orchestration/"
     port            = 80
     protocol        = "Http"
     request_timeout = 60
@@ -186,7 +187,7 @@ resource "azurerm_application_gateway" "load_balancer" {
       backend_http_settings_name = local.orchestration_backend_http_setting
       // this is the default, why would we set it again?
       // because if we don't do this we get 404s on API calls
-      rewrite_rule_set_name = "orchestration-routing"
+      //rewrite_rule_set_name = "orchestration-routing"
     }
 
     path_rule {
@@ -208,7 +209,7 @@ resource "azurerm_application_gateway" "load_balancer" {
       condition {
         ignore_case = true
         negate      = false
-        pattern     = ".*/orchestration(.*)"
+        pattern     = ".*orchestration/(.*)"
         variable    = "var_uri_path"
       }
 
