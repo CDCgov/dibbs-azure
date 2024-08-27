@@ -111,16 +111,7 @@ locals {
 
       is_public = false
 
-      env_vars = [
-        {
-          name  = "AZURE_STORAGE_CONNECTION_STRING",
-          value = var.azure_storage_connection_string
-        },
-        {
-          name  = "AZURE_CONTAINER_NAME",
-          value = var.azure_container_name
-        }
-      ]
+      env_vars = []
 
       target_port = 8080
     }
@@ -132,7 +123,16 @@ locals {
 
       is_public = true
 
-      env_vars = []
+      env_vars = [
+        {
+          name  = "AZURE_STORAGE_CONNECTION_STRING",
+          value = var.azure_storage_connection_string
+        },
+        {
+          name  = "AZURE_CONTAINER_NAME",
+          value = var.azure_container_name
+        }
+      ]
 
       target_port = 3000
     }

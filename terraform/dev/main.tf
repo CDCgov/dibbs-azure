@@ -35,7 +35,7 @@ module "container_apps" {
 
   aca_subnet_id   = module.networking.subnet_aca_id
   appgw_subnet_id = module.networking.subnet_appgw_id
-  vnet_id       = module.networking.network.id
+  vnet_id         = module.networking.network.id
 
   acr_url      = module.foundations.acr_url
   acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password
@@ -44,5 +44,5 @@ module "container_apps" {
   dibbs_version = "v1.6.0"
 
   azure_storage_connection_string = module.foundations.azure_storage_connection_string
-  azure_container_name = module.foundations.azure_container_name
+  azure_container_name            = module.foundations.azure_container_name
 }

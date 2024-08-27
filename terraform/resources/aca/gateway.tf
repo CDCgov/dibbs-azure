@@ -12,7 +12,7 @@ resource "azurerm_private_dns_a_record" "aca_record" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "aca_vnet_link" {
-  name                = "${local.name}-vnet-link"
+  name                  = "${local.name}-vnet-link"
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.aca_zone.name
   virtual_network_id    = var.vnet_id
@@ -99,19 +99,19 @@ resource "azurerm_application_gateway" "load_balancer" {
   # --- Orchestration Settings
 
   backend_address_pool {
-    name = local.orchestration_backend_pool
+    name  = local.orchestration_backend_pool
     fqdns = [azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn]
   }
 
   backend_http_settings {
     name                  = local.orchestration_backend_http_setting
     cookie_based_affinity = "Disabled"
-    path = "/orchestration/"
-    port            = 80
-    protocol        = "Http"
-    request_timeout = 60
-    host_name       = azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn
-    probe_name      = "orchestration-probe"
+    path                  = "/orchestration/"
+    port                  = 80
+    protocol              = "Http"
+    request_timeout       = 60
+    host_name             = azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn
+    probe_name            = "orchestration-probe"
   }
 
   probe {
@@ -132,7 +132,7 @@ resource "azurerm_application_gateway" "load_balancer" {
   # --- eCR Viewer Settings
 
   backend_address_pool {
-    name = local.ecr_viewer_backend_pool
+    name  = local.ecr_viewer_backend_pool
     fqdns = [azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn]
   }
 
