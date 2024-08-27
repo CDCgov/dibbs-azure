@@ -35,6 +35,6 @@ output "azure_storage_connection_string" {
   value = azurerm_storage_account.app.primary_connection_string
 }
 
-output "azure_storage_container_id" {
-  value = azurerm_storage_container.ecr_data.id
+output "azure_container_name" {
+  value = azurerm_storage_container.ecr_data.name
 }

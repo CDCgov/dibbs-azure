@@ -43,7 +43,7 @@ resource "azurerm_storage_account" "app" {
 }
 
 resource "azurerm_storage_container" "ecr_data" {
-  name                  = "eCR_data"
+  name                  = "ecr-data"
   storage_account_name  = azurerm_storage_account.app.name
   container_access_type = "private"
 }
