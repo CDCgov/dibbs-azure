@@ -83,3 +83,13 @@ variable "ghcr_string" {
   type        = string
   default     = "ghcr.io/cdcgov/phdi/"
 }
+
+variable "azure_storage_connection_string" {
+  description = "The connection string for the Azure Storage account for eCR processing"
+  type        = string
+}
+
+variable "azure_container_name" {
+  description = "The name of the Azure Storage container for eCR processing"
+  type        = string
+}

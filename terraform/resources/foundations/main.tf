@@ -41,3 +41,9 @@ resource "azurerm_storage_account" "app" {
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
 }
+
+resource "azurerm_storage_container" "ecr_data" {
+  name                  = "eCR_data"
+  storage_account_name = azurerm_storage_account.app.name
+  container_access_type = "private"
+}
