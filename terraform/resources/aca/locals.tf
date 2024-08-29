@@ -65,15 +65,15 @@ locals {
         },
         {
           name  = "INGESTION_URL",
-          value = "http://ingestion.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
+          value = "http://ingestion.internal.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
         },
         {
           name  = "VALIDATION_URL",
-          value = "http://validation.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
+          value = "http://validation.internal.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
         },
         {
           name  = "FHIR_CONVERTER_URL",
-          value = "http://fhir-converter.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
+          value = "http://fhir-converter.internal.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
         },
         {
           name  = "ECR_VIEWER_URL",
@@ -81,11 +81,11 @@ locals {
         },
         {
           name  = "MESSAGE_PARSER_URL",
-          value = "http://message-parser.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
+          value = "http://message-parser.internal.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
         },
         {
           name  = "TRIGGER_CODE_REFERENCE_URL",
-          value = "http://trigger-code-reference.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
+          value = "http://trigger-code-reference.internal.${azurerm_container_app_environment.ce_apps.default_domain}:8080"
         }
       ]
 

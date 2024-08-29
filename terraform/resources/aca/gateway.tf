@@ -109,7 +109,7 @@ resource "azurerm_application_gateway" "load_balancer" {
     path                  = "/orchestration/"
     port                  = 80
     protocol              = "Http"
-    request_timeout       = 60
+    request_timeout       = 300
     host_name             = azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn
     probe_name            = "orchestration-probe"
   }
