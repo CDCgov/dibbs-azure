@@ -139,7 +139,7 @@ resource "azurerm_application_gateway" "load_balancer" {
   backend_http_settings {
     name                  = local.ecr_viewer_backend_http_setting
     cookie_based_affinity = "Disabled"
-    path                  = "/api" //disable to add rewrite rule
+    path                  = "/ecr-viewer/" //disable to add rewrite rule
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60

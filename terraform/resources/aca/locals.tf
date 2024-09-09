@@ -131,6 +131,10 @@ locals {
         {
           name  = "AZURE_CONTAINER_NAME",
           value = var.azure_container_name
+        },
+        {
+          name  = "NEXT_PUBLIC_NON_INTEGRATED_VIEWER",
+          value = false
         }
       ]
 
