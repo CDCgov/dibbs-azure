@@ -139,7 +139,7 @@ resource "azurerm_application_gateway" "load_balancer" {
   backend_http_settings {
     name                  = local.ecr_viewer_backend_http_setting
     cookie_based_affinity = "Disabled"
-    path                  = "/ecr-viewer/" //disable to add rewrite rule
+    path                  = "/" //disable to add rewrite rule
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
@@ -151,7 +151,7 @@ resource "azurerm_application_gateway" "load_balancer" {
     host                = azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn
     name                = "ecr-viewer-probe"
     protocol            = "Http"
-    path                = "/api"
+    path                = "/api/health-check"
     interval            = 30
     timeout             = 30
     unhealthy_threshold = 3

@@ -135,6 +135,10 @@ locals {
         {
           name  = "NEXT_PUBLIC_NON_INTEGRATED_VIEWER",
           value = false
+        },
+        {
+          name  = "SOURCE",
+          value = "azure"
         }
       ]
 
