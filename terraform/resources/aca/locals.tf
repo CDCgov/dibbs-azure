@@ -77,7 +77,7 @@ locals {
         },
         {
           name  = "ECR_VIEWER_URL",
-          value = "http://ecr-viewer.${azurerm_container_app_environment.ce_apps.default_domain}"
+          value = "http://ecr-viewer.${azurerm_container_app_environment.ce_apps.default_domain}/ecr-viewer"
         },
         {
           name  = "MESSAGE_PARSER_URL",
@@ -139,6 +139,18 @@ locals {
         {
           name  = "SOURCE",
           value = "azure"
+        },
+        {
+          name  = "APP_ENV",
+          value = "test"
+        },
+        {
+          name  = "NODE_ENV",
+          value = "production"
+        },
+        {
+          name  = "NEXT_PUBLIC_BASEPATH",
+          value = "/ecr_viewer"
         }
       ]
 

@@ -139,7 +139,6 @@ resource "azurerm_application_gateway" "load_balancer" {
   backend_http_settings {
     name                  = local.ecr_viewer_backend_http_setting
     cookie_based_affinity = "Disabled"
-    path                  = "/" //disable to add rewrite rule
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
@@ -151,7 +150,7 @@ resource "azurerm_application_gateway" "load_balancer" {
     host                = azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn
     name                = "ecr-viewer-probe"
     protocol            = "Http"
-    path                = "/api/health-check"
+    path                = "/ecr-viewer/api/health-check"
     interval            = 30
     timeout             = 30
     unhealthy_threshold = 3
@@ -223,28 +222,7 @@ resource "azurerm_application_gateway" "load_balancer" {
     }
   }
 
-  rewrite_rule_set {
-    name = "ecr-viewer-routing"
 
-    rewrite_rule {
-      name          = "ecr-viewer-wildcard"
-      rule_sequence = 100
-      condition {
-        ignore_case = true
-        negate      = false
-        pattern     = ".*/ecr-viewer(.*)"
-        variable    = "var_uri_path"
-      }
-
-      url {
-        path    = "/{var_uri_path_1}"
-        reroute = false
-        # Per documentation, we should be able to leave this pass-through out. See however
-        # https://github.com/terraform-providers/terraform-provider-azurerm/issues/11563
-        query_string = "{var_query_string}"
-      }
-    }
-  }
 
   depends_on = [
     azurerm_public_ip.aca_ingress,
