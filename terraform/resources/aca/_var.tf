@@ -23,11 +23,6 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "key_vault_id" {
-  type        = string
-  description = "The ID of the Key Vault to use for secrets management"
-}
-
 variable "aca_subnet_id" {
   type        = string
   description = "The ID of the subnet to connect the Azure Container Apps environment to"

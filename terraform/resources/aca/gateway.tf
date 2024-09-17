@@ -184,9 +184,6 @@ resource "azurerm_application_gateway" "load_balancer" {
       paths                      = ["/orchestration/*", "/orchestration"]
       backend_address_pool_name  = local.orchestration_backend_pool
       backend_http_settings_name = local.orchestration_backend_http_setting
-      // this is the default, why would we set it again?
-      // because if we don't do this we get 404s on API calls
-      //rewrite_rule_set_name = "orchestration-routing"
     }
 
     path_rule {
@@ -194,35 +191,8 @@ resource "azurerm_application_gateway" "load_balancer" {
       paths                      = ["/ecr-viewer/*", "/ecr-viewer"]
       backend_address_pool_name  = local.ecr_viewer_backend_pool
       backend_http_settings_name = local.ecr_viewer_backend_http_setting
-      // Uncomment below to turn on rewrite functionality, if needed
-      //rewrite_rule_set_name = "ecr-viewer-routing"
     }
   }
-
-  rewrite_rule_set {
-    name = "orchestration-routing"
-
-    rewrite_rule {
-      name          = "orchestration-wildcard"
-      rule_sequence = 100
-      condition {
-        ignore_case = true
-        negate      = false
-        pattern     = ".*orchestration/(.*)"
-        variable    = "var_uri_path"
-      }
-
-      url {
-        path    = "/{var_uri_path_1}"
-        reroute = false
-        # Per documentation, we should be able to leave this pass-through out. See however
-        # https://github.com/terraform-providers/terraform-provider-azurerm/issues/11563
-        query_string = "{var_query_string}"
-      }
-    }
-  }
-
-
 
   depends_on = [
     azurerm_public_ip.aca_ingress,
@@ -231,8 +201,10 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   firewall_policy_id = azurerm_web_application_firewall_policy.aca_waf_policy.id
 
-  //tags = var.tags
+  // Consider uncommenting this line if your tags will be managed exclusively by Terraform.
+  // tags = var.tags
 
+  // Consider removing this block if your tags will be managed exclusively by Terraform.
   lifecycle {
     ignore_changes = [
       tags
@@ -240,8 +212,28 @@ resource "azurerm_application_gateway" "load_balancer" {
   }
 }
 
+resource "azurerm_key_vault" "kv" {
+  name                        = "${var.team}${var.project}${var.env}kv"
+  location                    = var.location
+  resource_group_name         = var.resource_group_name
+  enabled_for_disk_encryption = true
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = false
+
+  sku_name = "standard"
+
+  //It's recommended to set an access control list for the key vault. The network_acls block can be removed if your needs require it.
+  network_acls {
+    bypass                     = "AzureServices"
+    default_action             = "Deny"
+    virtual_network_subnet_ids = [var.aca_subnet_id, var.appgw_subnet_id]
+  }
+
+}
+
 resource "azurerm_key_vault_access_policy" "gateway" {
-  key_vault_id = var.key_vault_id
+  key_vault_id = azurerm_key_vault.kv.id
   object_id    = azurerm_user_assigned_identity.gateway.principal_id
   tenant_id    = data.azurerm_client_config.current.tenant_id
 

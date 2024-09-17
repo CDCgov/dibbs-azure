@@ -9,6 +9,8 @@ locals {
     password = var.acr_password
   }
 
+  // Configuration and environment variables for the building blocks are reflected below.
+  // CPU and memory settings can be adjusted as necessary within the bounds of your workload profile.
   building_block_definitions = {
     fhir-converter = {
       name        = "fhir-converter"

@@ -31,8 +31,6 @@ module "container_apps" {
   location            = local.location
   resource_group_name = module.foundations.resource_group_name
 
-  key_vault_id = module.foundations.key_vault_id
-
   aca_subnet_id   = module.networking.subnet_aca_id
   appgw_subnet_id = module.networking.subnet_appgw_id
   vnet_id         = module.networking.network.id

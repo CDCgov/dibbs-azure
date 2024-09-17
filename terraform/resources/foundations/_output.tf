@@ -27,10 +27,6 @@ output "acr_admin_password" {
   sensitive = true
 }
 
-output "key_vault_id" {
-  value = azurerm_key_vault.kv.id
-}
-
 output "azure_storage_connection_string" {
   value = azurerm_storage_account.app.primary_connection_string
 }

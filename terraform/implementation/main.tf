@@ -1,8 +1,8 @@
 locals {
-  team     = "dibbs"
-  project  = "ce"
-  env      = "dev"
-  location = "eastus"
+  team     = "<insert>" // TODO: Change this to match your implementation team's name or internal asset code.
+  project  = "dibbs"
+  env      = "dev"    // TODO: Change this to match your desired environment (e.g., dev, test, prod). Make sure to vary this between environments.
+  location = "eastus" // TODO: Change this to match your desired Azure region.
 }
 
 module "foundations" {
@@ -31,15 +31,16 @@ module "container_apps" {
   location            = local.location
   resource_group_name = module.foundations.resource_group_name
 
-  publisher_name  = "" # Add the missing attribute "publisher_name" here
-  publisher_email = "" # Add the missing attribute "publisher_email" here
-
-  key_vault_id = module.foundations.key_vault_id
-
-  aca_subnet_id = module.networking.subnet_aca_id
-  vnet_id       = module.networking.network.id
+  aca_subnet_id   = module.networking.subnet_aca_id
+  appgw_subnet_id = module.networking.subnet_appgw_id
+  vnet_id         = module.networking.network.id
 
   acr_url      = module.foundations.acr_url
-  acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password
-  acr_password = module.foundations.acr_admin_password //TODO: Change to an ACA-specific password
+  acr_username = module.foundations.acr_admin_username
+  acr_password = module.foundations.acr_admin_password
+
+  dibbs_version = "v1.6.4"
+
+  azure_storage_connection_string = module.foundations.azure_storage_connection_string
+  azure_container_name            = module.foundations.azure_container_name
 }

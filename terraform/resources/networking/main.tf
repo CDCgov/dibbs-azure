@@ -2,7 +2,6 @@ locals {
   name = "${var.team}-${var.project}-${var.env}"
 }
 
-# Create the virtual network and the persistent subnets
 resource "azurerm_virtual_network" "vnet" {
   name                = "${local.name}-network"
   resource_group_name = var.resource_group_name

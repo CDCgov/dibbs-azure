@@ -17,7 +17,11 @@ resource "azurerm_container_app_environment" "ce_apps" {
   infrastructure_resource_group_name = "${local.name}-apps-rg"
   infrastructure_subnet_id           = var.aca_subnet_id
 
-  //Can create additional profiles for FHIR converter, etc.
+  /*
+   * Can create additional profiles for FHIR converter, etc. if needed.
+   * Be sure to adjust the value for workload_profile_type if your building blocks
+   * hit the resource cap.
+   */
   workload_profile {
     name                  = local.workload_profile
     workload_profile_type = "D4"
@@ -29,9 +33,9 @@ resource "azurerm_container_app_environment" "ce_apps" {
 }
 
 /*
-  Due to internal timings within Azure, the container registry needs extra time to process the presence
-  of the images before they are available to be read by the Azure Container Apps environment.
-*/
+ * Due to internal timings within Azure, the container registry needs extra time to process the presence
+ * of the images before they are available to be read by the Azure Container Apps environment.
+ */
 resource "time_sleep" "wait_for_app_images" {
   depends_on      = [docker_registry_image.aca_image]
   create_duration = "60s"
@@ -59,7 +63,6 @@ resource "azurerm_container_app" "aca_apps" {
           name  = env.value.name
           value = env.value.value
         }
-
       }
     }
   }
@@ -80,13 +83,12 @@ resource "azurerm_container_app" "aca_apps" {
     server               = var.acr_url
     username             = var.acr_username
     password_secret_name = "acr-password-secret"
-    //TODO: change the above to a key vault reference.
   }
 
   secret {
     name  = "acr-password-secret"
     value = var.acr_password
-  } //TODO: Delete this in favor of key vault reference?
+  }
 
   workload_profile_name = local.workload_profile
 
