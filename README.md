@@ -36,6 +36,10 @@ Ensure there are no configuration errors, and review the plan output to confirm 
 terraform apply
 ```
 
+# Deployment Sample
+The `dev` folder contains a working sample of a fully-configured environment. You can use this as a reference for your own deployment.
+
+
 # Notices and Disclaimers
 
 This repository constitutes a work of the United States Government and is not
