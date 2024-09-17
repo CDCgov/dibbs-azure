@@ -1,0 +1,92 @@
+name: Terraform Checks
+
+on:
+  workflow_dispatch: # because sometimes you just want to force a branch to have tests run
+  pull_request:
+    branches:
+      - "**"
+  merge_group:
+    types:
+      - checks_requested
+
+defaults:
+  run:
+    working-directory: ./terraform
+
+jobs:
+  check-terraform-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3.1.2
+        with:
+          terraform_version: 1.7.4
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+
+  check-terraform-validity:
+    runs-on: ubuntu-latest
+    env:
+      TERRAFORM_DIRS: |
+          implementation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3.1.2
+        with:
+          terraform_version: 1.7.4
+      - name: Terraform Init
+        run: |
+          for d in $TERRAFORM_DIRS
+          do
+            echo "Initializing $d";
+            (cd $d && terraform init -backend=false)
+          done
+      - name: Terraform Validate
+        run: |
+          for d in $TERRAFORM_DIRS
+          do
+            echo "Validating $d";
+            (cd $d && terraform validate)
+          done
+
+  terraform-plan:
+    runs-on: ubuntu-latest
+    needs: [check-terraform-validity]
+    env: # all Azure interaction is through terraform
+      ARM_CLIENT_ID: ${{ secrets.TERRAFORM_ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.TERRAFORM_ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.TERRAFORM_ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.TERRAFORM_ARM_TENANT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependabot bypass
+        if: ${{ github.actor == 'dependabot[bot]' }}
+        run: |
+          true
+      - uses: azure/login@v2
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: hashicorp/setup-terraform@v3.1.2
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        with:
+          terraform_version: 1.7.4
+      - name: Set variables
+        working-directory: ./octopus
+        run: |
+          VER=$(cat VERSION)
+          echo "VERSION=$VER" >> $GITHUB_ENV  
+      - name: Terraform Init Prod
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        run: make init-prod
+      - name: Terraform Plan Prod
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        run: make plan-prod
+      - name: Terraform Init Global
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        run: make init-global
+      - name: Terraform Plan Global
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        env:
+          OCTOPUS_VERSION: ${{ env.VERSION }}
+        run: make plan-global
