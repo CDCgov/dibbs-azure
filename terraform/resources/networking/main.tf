@@ -16,7 +16,8 @@ resource "azurerm_subnet" "appgw" {
   address_prefixes     = [var.app_gateway_subnet_address_prefix]
   service_endpoints = [
     "Microsoft.Web",
-    "Microsoft.Storage"
+    "Microsoft.Storage",
+    "Microsoft.KeyVault"
   ]
 }
 
@@ -25,6 +26,9 @@ resource "azurerm_subnet" "aca" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.aca_subnet_address_prefix]
+  service_endpoints = [
+    "Microsoft.KeyVault"
+  ]
 
   delegation {
     name = "aca_delegation"

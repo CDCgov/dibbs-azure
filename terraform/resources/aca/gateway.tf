@@ -213,7 +213,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 }
 
 resource "azurerm_key_vault" "kv" {
-  name                        = "${var.team}${var.project}${var.env}kv"
+  name                        = "${var.team}${var.project}${var.env}vlt"
   location                    = var.location
   resource_group_name         = var.resource_group_name
   enabled_for_disk_encryption = true
