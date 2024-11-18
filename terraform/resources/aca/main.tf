@@ -37,7 +37,7 @@ resource "azurerm_container_app_environment" "ce_apps" {
  * of the images before they are available to be read by the Azure Container Apps environment.
  */
 resource "time_sleep" "wait_for_app_images" {
-  depends_on      = [docker_registry_image.aca_image]
+  depends_on      = [dockerless_remote_image.dibbs]
   create_duration = "60s"
 }
 
@@ -52,7 +52,7 @@ resource "azurerm_container_app" "aca_apps" {
   template {
     container {
       name   = each.value.name
-      image  = "${var.acr_url}/${var.ghcr_string}${each.value.name}:${each.value.app_version}"
+      image  = "${var.acr_url}/${each.value.name}:${each.value.app_version}"
       cpu    = each.value.cpu
       memory = each.value.memory
 
