@@ -20,7 +20,10 @@ module "networking" {
   env                   = local.env
   location              = local.location
   resource_group_name   = module.foundations.resource_group_name
-  network_address_space = "10.30.0.0/16"
+  
+  network_address_space = ["10.30.0.0/24"]
+  aca_subnet_address_prefixes = ["10.30.0.0/25"]
+  app_gateway_subnet_address_prefixes = ["10.30.0.128/26"]
 }
 
 module "container_apps" {
@@ -39,7 +42,7 @@ module "container_apps" {
   acr_username = module.foundations.acr_admin_username
   acr_password = module.foundations.acr_admin_password
 
-  dibbs_version = "v1.6.4"
+  dibbs_version = "v1.7.2"
 
   azure_storage_connection_string = module.foundations.azure_storage_connection_string
   azure_container_name            = module.foundations.azure_container_name
