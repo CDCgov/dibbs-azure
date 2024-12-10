@@ -79,11 +79,13 @@ resource "azurerm_application_gateway" "load_balancer" {
     protocol                       = "Http"
   }
 
+
   # --- Container Environment Pool
 
   backend_address_pool {
     name         = local.aca_backend_pool
-    ip_addresses = [azurerm_container_app_environment.ce_apps.static_ip_address]
+    //ip_addresses = [azurerm_container_app_environment.ce_apps.static_ip_address]
+    fqdns = [azurerm_container_app.dibbs_site.latest_revision_fqdn]
   }
 
   backend_http_settings {
@@ -93,8 +95,42 @@ resource "azurerm_application_gateway" "load_balancer" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
-    host_name             = azurerm_container_app_environment.ce_apps.default_domain
+    //host_name             = azurerm_container_app_environment.ce_apps.default_domain
+    host_name = azurerm_container_app.dibbs_site.latest_revision_fqdn
   }
+
+  # --- DIBBs Site Settings
+  /*backend_address_pool {
+    name         = local.dibbs_site_backend_pool
+    fqdns = [azurerm_container_app.dibbs_site.latest_revision_fqdn]
+  }
+
+  backend_http_settings {
+    name                  = local.dibbs_site_backend_http_setting
+    cookie_based_affinity = "Disabled"
+    //path                  = "/"
+    port                  = 80
+    protocol              = "Http"
+    request_timeout       = 60
+    host_name = azurerm_container_app.dibbs_site.latest_revision_fqdn
+    probe_name            = "dibbs-site-probe"
+  }
+
+  probe {
+    host                = azurerm_container_app.dibbs_site.latest_revision_fqdn
+    name                = "dibbs-site-probe"
+    protocol            = "Http"
+    //path                = "/dibbs-site"
+    path                = "/"
+    interval            = 30
+    timeout             = 30
+    unhealthy_threshold = 3
+
+    match {
+      status_code = ["200"]
+    }
+
+  }*/
 
   # --- Orchestration Settings
 
@@ -158,7 +194,37 @@ resource "azurerm_application_gateway" "load_balancer" {
     match {
       status_code = ["200"]
     }
+  }
 
+    # --- Query Connector Settings
+
+  backend_address_pool {
+    name  = local.query_connector_backend_pool
+    fqdns = [azurerm_container_app.query_connector.latest_revision_fqdn]
+  }
+
+  backend_http_settings {
+    name                  = local.query_connector_backend_http_setting
+    cookie_based_affinity = "Disabled"
+    port                  = 80
+    protocol              = "Http"
+    request_timeout       = 60
+    host_name             = azurerm_container_app.query_connector.latest_revision_fqdn
+    probe_name            = "query-connector-probe"
+  }
+
+  probe {
+    host                = azurerm_container_app.query_connector.latest_revision_fqdn
+    name                = "query-connector-probe"
+    protocol            = "Http"
+    path                = "/query-connector"
+    interval            = 30
+    timeout             = 30
+    unhealthy_threshold = 3
+
+    match {
+      status_code = ["200"]
+    }
   }
 
   # ------- Routing -------------------------
@@ -192,11 +258,17 @@ resource "azurerm_application_gateway" "load_balancer" {
       backend_address_pool_name  = local.ecr_viewer_backend_pool
       backend_http_settings_name = local.ecr_viewer_backend_http_setting
     }
+
+    path_rule {
+      name                       = "query-connector"
+      paths                      = ["/query-connector/*", "/query-connector"]
+      backend_address_pool_name  = local.query_connector_backend_pool
+      backend_http_settings_name = local.query_connector_backend_http_setting
+    }
   }
 
   depends_on = [
-    azurerm_public_ip.aca_ingress,
-    azurerm_key_vault_access_policy.gateway
+    azurerm_public_ip.aca_ingress
   ]
 
   firewall_policy_id = azurerm_web_application_firewall_policy.aca_waf_policy.id
@@ -212,7 +284,7 @@ resource "azurerm_application_gateway" "load_balancer" {
   }
 }
 
-resource "azurerm_key_vault" "kv" {
+/*resource "azurerm_key_vault" "kv" {
   name                        = "${var.team}${var.project}${var.env}kv"
   location                    = var.location
   resource_group_name         = var.resource_group_name
@@ -230,15 +302,15 @@ resource "azurerm_key_vault" "kv" {
     virtual_network_subnet_ids = [var.aca_subnet_id, var.appgw_subnet_id]
   }
 
-}
-
+}*/
+/*
 resource "azurerm_key_vault_access_policy" "gateway" {
   key_vault_id = azurerm_key_vault.kv.id
   object_id    = azurerm_user_assigned_identity.gateway.principal_id
   tenant_id    = data.azurerm_client_config.current.tenant_id
 
   secret_permissions = ["Get"]
-}
+}*/
 
 
 // Gateway analytics

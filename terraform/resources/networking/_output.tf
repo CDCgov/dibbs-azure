@@ -6,6 +6,10 @@ output "subnet_aca_id" {
   value = azurerm_subnet.aca.id
 }
 
+output "subnet_db_id" {
+  value = azurerm_subnet.db.id
+}
+
 output "network" {
   value = azurerm_virtual_network.vnet
 }

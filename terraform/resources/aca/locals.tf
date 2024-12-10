@@ -172,7 +172,20 @@ hR9rUr59dP2BTlcJ19ZXobLwuJEa81S5BrcbDwYNOAzC8jl2EV1i4bQIwJJaY27X
 Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
 -----END PUBLIC KEY-----
           EOT
-        }
+        },
+        {
+          name = "METADATA_DATABASE_TYPE",
+          value = "postgres"
+        },
+        {
+          name = "METADATA_DATABASE_SCHEMA",
+          value = "core"
+        },
+        {
+          name = "DATABASE_URL",
+          value = "postgres://${data.azurerm_key_vault_secret.ecr_viewer_db_username.value}:${urlencode(data.azurerm_key_vault_secret.ecr_viewer_db_password.value)}@${var.ecr_viewer_db_fqdn}:${var.ecr_viewer_db_port}/${var.ecr_viewer_db_name}"
+        },
+
       ]
 
       target_port = 3000
@@ -198,10 +211,17 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
 
   aca_backend_pool                    = "${local.name}-be-aca"
   aca_backend_http_setting            = "${local.name}-be-aca-http"
+
+  dibbs_site_backend_pool             = "${local.name}-be-dibbs-site"
+  dibbs_site_backend_http_setting     = "${local.name}-be-dibbs-site-http"
+
   orchestration_backend_pool          = "${local.name}-be-orchestration"
   orchestration_backend_http_setting  = "${local.name}-be-orchestration-http"
   orchestration_backend_https_setting = "${local.name}-be-orchestration-https"
   ecr_viewer_backend_pool             = "${local.name}-be-ecr_viewer"
   ecr_viewer_backend_http_setting     = "${local.name}-be-api-ecr_viewer-http"
   ecr_viewer_backend_https_setting    = "${local.name}-be-api-ecr_viewer-https"
+
+  query_connector_backend_pool        = "${local.name}-be-query_connector"
+  query_connector_backend_http_setting= "${local.name}-be-query_connector-http"
 }

@@ -39,3 +39,22 @@ resource "azurerm_subnet" "aca" {
     }
   }
 }
+
+resource "azurerm_subnet" "db" {
+  name                 = "${local.name}-db"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.db_subnet_address_prefixes
+  service_endpoints = [
+    "Microsoft.KeyVault"
+  ]
+
+  delegation {
+    name = "aca_delegation"
+
+    service_delegation {
+      name    = "Microsoft.DBforPostgreSQL/flexibleServers"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+    }
+  } 
+}

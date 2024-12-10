@@ -38,5 +38,11 @@ variable "aca_subnet_address_prefixes" {
 variable "app_gateway_subnet_address_prefixes" {
   type        = list(string)
   description = "App gateway subnet server IP address space."
-  default     = ["10.30.0.128/25"]
+  default     = ["10.30.0.128/26"]
+}
+
+variable "db_subnet_address_prefixes" {
+  type        = list(string)
+  description = "App gateway subnet server IP address space."
+  default     = ["10.30.0.192/27"]
 }

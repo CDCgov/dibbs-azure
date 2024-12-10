@@ -88,3 +88,74 @@ variable "azure_container_name" {
   description = "The name of the Azure Storage container for eCR processing"
   type        = string
 }
+
+variable "query_connector_version" {
+  description = "The version of the Query Connector to deploy."
+  type        = string
+}
+
+variable "dibbs_site_version" {
+  description = "The version of the DIBBs public information site to deploy."
+  type        = string
+}
+
+variable "query_connector_ghcr_string" {
+  description = "The string to use for the source GitHub Container Registry for images needed to construct the Query Connector pipeline"
+  type        = string
+  default     = "ghcr.io/cdcgov/dibbs-query-connector/"
+}
+
+variable "dibbs_site_ghcr_string" {
+  description = "The string to use for the source GitHub Container Registry for images needed to construct the DIBBs public information site pipeline"
+  type        = string
+  default     = "ghcr.io/cdcgov/dibbs-site"
+}
+
+variable "query_connector_container_name" {
+  description = "The name of the Query Connector container to use in sourcing docker images and constructing Container App assets"
+  type        = string
+  default     = "query-connector"
+}
+
+variable "dibbs_site_container_name" {
+  description = "The name of the DIBBs site container to use in sourcing docker images and constructing Container App assets"
+  type        = string
+  default     = "dibbs-site"
+}
+
+variable "ecr_viewer_db_fqdn" {
+  description = "The fully qualified domain name of the eCR Viewer database"
+  type        = string
+}
+
+variable "query_connector_db_fqdn" {
+  description = "The fully qualified domain name of the Query Connector database"
+  type        = string 
+}
+
+variable "ecr_viewer_db_name" {
+  description = "The name of the eCR Viewer database"
+  type        = string
+}
+
+variable "query_connector_db_name" {
+  description = "The name of the Query Connector database"
+  type        = string
+}
+
+variable "key_vault_id" {
+  description = "The ID of the key vault from which to retrieve the database credentials"
+  type        = string
+}
+
+variable "ecr_viewer_db_port" {
+  type        = number
+  description = "Port for the eCR Viewer RDS Instance"
+  default     = 5432
+}
+
+variable "query_connector_db_port" {
+  type        = number
+  description = "Port for the Query Connector RDS Instance"
+  default     = 5432
+}
