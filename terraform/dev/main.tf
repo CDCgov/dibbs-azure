@@ -64,7 +64,7 @@ module "container_apps" {
 
   dibbs_version = "v1.7.2"
   query_connector_version = "latest"
-  dibbs_site_version = "next-0feed16"
+  dibbs_site_version = "next-4451f1a"
 
   ecr_viewer_db_fqdn = module.db.ecr_viewer_server_fqdn
   ecr_viewer_db_name = module.db.ecr_viewer_db_name
