@@ -130,7 +130,7 @@ variable "ecr_viewer_db_fqdn" {
 
 variable "query_connector_db_fqdn" {
   description = "The fully qualified domain name of the Query Connector database"
-  type        = string 
+  type        = string
 }
 
 variable "ecr_viewer_db_name" {

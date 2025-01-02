@@ -122,20 +122,20 @@ resource "azurerm_container_app" "query_connector" {
         value = "production"
       }
       env {
-        name = "DATABASE_URL"
+        name  = "DATABASE_URL"
         value = "postgres://${data.azurerm_key_vault_secret.query_connector_db_username.value}:${urlencode(data.azurerm_key_vault_secret.query_connector_db_password.value)}@${var.query_connector_db_fqdn}:${var.query_connector_db_port}/${var.query_connector_db_name}"
       }
       env {
-        name = "FLYWAY_URL"
+        name  = "FLYWAY_URL"
         value = "jdbc:postgresql://${var.query_connector_db_fqdn}:${var.query_connector_db_port}/${var.query_connector_db_name}"
       }
       env {
-        name = "FLYWAY_USER"
-        value = "${data.azurerm_key_vault_secret.query_connector_db_username.value}"
+        name  = "FLYWAY_USER"
+        value = data.azurerm_key_vault_secret.query_connector_db_username.value
       }
       env {
-        name = "FLYWAY_PASSWORD"
-        value = "${data.azurerm_key_vault_secret.query_connector_db_password.value}"
+        name  = "FLYWAY_PASSWORD"
+        value = data.azurerm_key_vault_secret.query_connector_db_password.value
       }
     }
   }
@@ -186,7 +186,7 @@ resource "azurerm_container_app" "dibbs_site" {
         value = "production"
       }
       env {
-        name = "NEXT_TELEMETRY_DISABLED"
+        name  = "NEXT_TELEMETRY_DISABLED"
         value = 1
       }
     }

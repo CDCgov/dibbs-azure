@@ -56,5 +56,5 @@ resource "azurerm_subnet" "db" {
       name    = "Microsoft.DBforPostgreSQL/flexibleServers"
       actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
     }
-  } 
+  }
 }

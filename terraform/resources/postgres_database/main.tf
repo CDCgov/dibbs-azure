@@ -1,11 +1,11 @@
 resource "azurerm_postgresql_flexible_server" "ecr_viewer_db" {
-  name                = "ecr-viewer-${var.env}-flexible-db"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  sku_name            = var.env == "prod" ? "MO_Standard_E2ds_v4" : "MO_Standard_E2ds_v4" # Lowering capacity for now, since eCR viewer is not a high-load service.
-  version             = "16"
-  delegated_subnet_id = var.db_subnet_id
-  private_dns_zone_id = azurerm_private_dns_zone.default.id
+  name                          = "ecr-viewer-${var.env}-flexible-db"
+  location                      = var.location
+  resource_group_name           = var.resource_group_name
+  sku_name                      = var.env == "prod" ? "MO_Standard_E2ds_v4" : "MO_Standard_E2ds_v4" # Lowering capacity for now, since eCR viewer is not a high-load service.
+  version                       = "16"
+  delegated_subnet_id           = var.db_subnet_id
+  private_dns_zone_id           = azurerm_private_dns_zone.default.id
   public_network_access_enabled = false
 
 
@@ -35,7 +35,7 @@ resource "azurerm_postgresql_flexible_server" "ecr_viewer_db" {
   }
 
   identity {
-    type = "UserAssigned"
+    type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.ecr_viewer_db.id]
   }
 
@@ -47,7 +47,7 @@ resource "azurerm_postgresql_flexible_server" "ecr_viewer_db" {
       tags
     ]
   }
-  depends_on = [ azurerm_private_dns_zone_virtual_network_link.vnet_link ]
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.vnet_link]
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "ev-ossp" {
@@ -64,13 +64,13 @@ resource "azurerm_postgresql_flexible_server_database" "ecr_viewer" {
 }
 
 resource "azurerm_postgresql_flexible_server" "query_connector_db" {
-  name                = "query-connector-${var.env}-flexible-db"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  sku_name            = var.env == "prod" ? "MO_Standard_E4ds_v4" : "MO_Standard_E2ds_v4"
-  version             = "16"
-  delegated_subnet_id = var.db_subnet_id
-  private_dns_zone_id = azurerm_private_dns_zone.default.id
+  name                          = "query-connector-${var.env}-flexible-db"
+  location                      = var.location
+  resource_group_name           = var.resource_group_name
+  sku_name                      = var.env == "prod" ? "MO_Standard_E4ds_v4" : "MO_Standard_E2ds_v4"
+  version                       = "16"
+  delegated_subnet_id           = var.db_subnet_id
+  private_dns_zone_id           = azurerm_private_dns_zone.default.id
   public_network_access_enabled = false
 
 
@@ -100,7 +100,7 @@ resource "azurerm_postgresql_flexible_server" "query_connector_db" {
   }
 
   identity {
-    type = "UserAssigned"
+    type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.query_connector_db.id]
   }
 
@@ -112,7 +112,7 @@ resource "azurerm_postgresql_flexible_server" "query_connector_db" {
       tags
     ]
   }
-  depends_on = [ azurerm_private_dns_zone_virtual_network_link.vnet_link ]
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.vnet_link]
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "qc-ossp" {

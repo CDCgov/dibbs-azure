@@ -14,15 +14,15 @@ module "foundations" {
 }
 
 module "networking" {
-  source                = "../resources/networking"
-  team                  = local.team
-  project               = local.project
-  env                   = local.env
-  location              = local.location
-  resource_group_name   = module.foundations.resource_group_name
-  
-  network_address_space = ["10.30.0.0/24"]
-  aca_subnet_address_prefixes = ["10.30.0.0/25"]
+  source              = "../resources/networking"
+  team                = local.team
+  project             = local.project
+  env                 = local.env
+  location            = local.location
+  resource_group_name = module.foundations.resource_group_name
+
+  network_address_space               = ["10.30.0.0/24"]
+  aca_subnet_address_prefixes         = ["10.30.0.0/25"]
   app_gateway_subnet_address_prefixes = ["10.30.0.128/26"]
 }
 

@@ -174,15 +174,15 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
           EOT
         },
         {
-          name = "METADATA_DATABASE_TYPE",
+          name  = "METADATA_DATABASE_TYPE",
           value = "postgres"
         },
         {
-          name = "METADATA_DATABASE_SCHEMA",
+          name  = "METADATA_DATABASE_SCHEMA",
           value = "core"
         },
         {
-          name = "DATABASE_URL",
+          name  = "DATABASE_URL",
           value = "postgres://${data.azurerm_key_vault_secret.ecr_viewer_db_username.value}:${urlencode(data.azurerm_key_vault_secret.ecr_viewer_db_password.value)}@${var.ecr_viewer_db_fqdn}:${var.ecr_viewer_db_port}/${var.ecr_viewer_db_name}"
         },
 
@@ -209,11 +209,11 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
   frontend_config = "${local.name}-config"
   redirect_rule   = "${local.name}-redirect"
 
-  aca_backend_pool                    = "${local.name}-be-aca"
-  aca_backend_http_setting            = "${local.name}-be-aca-http"
+  aca_backend_pool         = "${local.name}-be-aca"
+  aca_backend_http_setting = "${local.name}-be-aca-http"
 
-  dibbs_site_backend_pool             = "${local.name}-be-dibbs-site"
-  dibbs_site_backend_http_setting     = "${local.name}-be-dibbs-site-http"
+  dibbs_site_backend_pool         = "${local.name}-be-dibbs-site"
+  dibbs_site_backend_http_setting = "${local.name}-be-dibbs-site-http"
 
   orchestration_backend_pool          = "${local.name}-be-orchestration"
   orchestration_backend_http_setting  = "${local.name}-be-orchestration-http"
@@ -222,6 +222,6 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
   ecr_viewer_backend_http_setting     = "${local.name}-be-api-ecr_viewer-http"
   ecr_viewer_backend_https_setting    = "${local.name}-be-api-ecr_viewer-https"
 
-  query_connector_backend_pool        = "${local.name}-be-query_connector"
-  query_connector_backend_http_setting= "${local.name}-be-query_connector-http"
+  query_connector_backend_pool         = "${local.name}-be-query_connector"
+  query_connector_backend_http_setting = "${local.name}-be-query_connector-http"
 }

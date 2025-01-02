@@ -83,7 +83,7 @@ resource "azurerm_application_gateway" "load_balancer" {
   # --- Container Environment Pool
 
   backend_address_pool {
-    name         = local.aca_backend_pool
+    name = local.aca_backend_pool
     //ip_addresses = [azurerm_container_app_environment.ce_apps.static_ip_address]
     fqdns = [azurerm_container_app.dibbs_site.latest_revision_fqdn]
   }
@@ -196,7 +196,7 @@ resource "azurerm_application_gateway" "load_balancer" {
     }
   }
 
-    # --- Query Connector Settings
+  # --- Query Connector Settings
 
   backend_address_pool {
     name  = local.query_connector_backend_pool

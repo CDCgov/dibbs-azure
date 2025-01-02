@@ -57,16 +57,16 @@ resource "azurerm_key_vault_access_policy" "tf-user" {
 }
 */
 
-resource azurerm_user_assigned_identity "ecr_viewer_db" {
+resource "azurerm_user_assigned_identity" "ecr_viewer_db" {
   name                = "ecr-viewer-${var.env}-db-identity"
   resource_group_name = var.resource_group_name
-  location = var.location
+  location            = var.location
 }
 
-resource azurerm_user_assigned_identity "query_connector_db" {
+resource "azurerm_user_assigned_identity" "query_connector_db" {
   name                = "query-connector-${var.env}-db-identity"
   resource_group_name = var.resource_group_name
-  location = var.location
+  location            = var.location
 }
 
 resource "azurerm_role_assignment" "key_vault_administrator" {
@@ -86,16 +86,16 @@ resource "azurerm_key_vault_secret" "ecr_viewer_db_username" {
   name         = "ecr-viewer-db-username"
   value        = var.ecr_viewer_db_username
 
-  depends_on = [ time_sleep.wait_for_rbac_propagation ]
+  depends_on = [time_sleep.wait_for_rbac_propagation]
 }
 
 //TODO: Change this to use a TF-generated password, like db-password-no-phi. See #3673 for the additional work.
 resource "azurerm_key_vault_secret" "ecr_viewer_db_password" {
   key_vault_id = azurerm_key_vault.kv.id
   name         = "ecr-viewer-db-password"
-  value = random_password.setup_rds_password[0].result
+  value        = random_password.setup_rds_password[0].result
 
-  depends_on = [ time_sleep.wait_for_rbac_propagation ]
+  depends_on = [time_sleep.wait_for_rbac_propagation]
 }
 
 # Create the no-PHI user
@@ -104,19 +104,19 @@ resource "azurerm_key_vault_secret" "query_connector_db_username" {
   name         = "query-connector-db-username"
   value        = var.query_connector_db_username
 
-  depends_on = [ time_sleep.wait_for_rbac_propagation ]
+  depends_on = [time_sleep.wait_for_rbac_propagation]
 }
 
 resource "azurerm_key_vault_secret" "query_connector_db_password" {
   key_vault_id = azurerm_key_vault.kv.id
   name         = "query-connector-db-password"
-  value = random_password.setup_rds_password[0].result
+  value        = random_password.setup_rds_password[0].result
 
-  depends_on = [ time_sleep.wait_for_rbac_propagation ]
+  depends_on = [time_sleep.wait_for_rbac_propagation]
 }
 
 resource "random_password" "setup_rds_password" {
-  count = 2
+  count  = 2
   length = 24
 
   # Character set that excludes problematic characters like quotes, backslashes, etc.

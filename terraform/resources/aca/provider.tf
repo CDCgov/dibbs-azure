@@ -4,6 +4,10 @@ terraform {
       source  = "nullstone-io/dockerless"
       version = "~> 0.1.1"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "3.0.2"
+    }
   }
 }
 
@@ -14,4 +18,8 @@ provider "dockerless" {
       password = var.acr_password
     }
   }
+}
+
+provider "azuread" {
+
 }

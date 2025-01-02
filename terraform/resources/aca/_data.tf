@@ -19,3 +19,5 @@ data "azurerm_key_vault_secret" "query_connector_db_password" {
   name         = "query-connector-db-password"
   key_vault_id = var.key_vault_id
 }
+
+data "azuread_client_config" "current" {}
