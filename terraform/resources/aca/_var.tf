@@ -76,7 +76,7 @@ variable "dibbs_version" {
 variable "ghcr_string" {
   description = "The string to use for the source GitHub Container Registry"
   type        = string
-  default     = "ghcr.io/cdcgov/phdi/"
+  default     = "ghcr.io/cdcgov/dibbs-ecr-viewer/"
 }
 
 variable "azure_storage_connection_string" {
@@ -87,4 +87,10 @@ variable "azure_storage_connection_string" {
 variable "azure_container_name" {
   description = "The name of the Azure Storage container for eCR processing"
   type        = string
+}
+
+variable "nbs_public_key" {
+  description = "Public key to use for managing connections to NBS"
+  type       = string
+  default = ""
 }
