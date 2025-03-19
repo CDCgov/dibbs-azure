@@ -29,7 +29,3 @@ output "query_connector_server_fqdn" {
 output "query_connector_db_name" {
   value = azurerm_postgresql_flexible_server_database.query_connector.name
 }
-
-output "key_vault_id" {
-  value = azurerm_key_vault.kv.id
-}

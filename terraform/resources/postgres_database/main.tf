@@ -56,6 +56,12 @@ resource "azurerm_postgresql_flexible_server_configuration" "ev-ossp" {
   value     = "UUID-OSSP"
 }
 
+resource "azurerm_postgresql_flexible_server_configuration" "ssl_off" {
+  name      = "require_secure_transport"
+  server_id = azurerm_postgresql_flexible_server.ecr_viewer_db.id
+  value     = "off"
+}
+
 resource "azurerm_postgresql_flexible_server_database" "ecr_viewer" {
   charset   = "UTF8"
   collation = "en_US.utf8"
@@ -140,4 +146,16 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link" {
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.default.name
   virtual_network_id    = var.db_vnet_id
+}
+
+resource "azurerm_user_assigned_identity" "ecr_viewer_db" {
+  name                = "ecr-viewer-${var.env}-db-identity"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+}
+
+resource "azurerm_user_assigned_identity" "query_connector_db" {
+  name                = "query-connector-${var.env}-db-identity"
+  resource_group_name = var.resource_group_name
+  location            = var.location
 }

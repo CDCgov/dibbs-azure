@@ -76,7 +76,7 @@ variable "dibbs_version" {
 variable "ghcr_string" {
   description = "The string to use for the source GitHub Container Registry"
   type        = string
-  default     = "ghcr.io/cdcgov/phdi/"
+  default     = "ghcr.io/cdcgov/dibbs-ecr-viewer/"
 }
 
 variable "azure_storage_connection_string" {

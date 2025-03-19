@@ -3,7 +3,7 @@ locals {
 
   domain_name = data.azuread_domains.default.domains.0.domain_name
 }
-
+/*
 # Create test users
 resource "azuread_user" "ecr_viewer_admin_user" {
   display_name        = "DIBBs eCR Viewer Admin User"
@@ -44,3 +44,4 @@ resource "azuread_app_role_assignment" "ecr_viewer_unprivileged_readonly_app_rol
   principal_object_id = azuread_user.ecr_viewer_unprivileged_readonly_user.id
   resource_object_id  = var.ecr_viewer_service_principal_id
 }
+*/

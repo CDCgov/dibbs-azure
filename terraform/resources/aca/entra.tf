@@ -1,5 +1,5 @@
 locals {
-  ecr_viewer_base_address = "http://${azurerm_public_ip.aca_ingress.fqdn}/ecr_viewer"
+  ecr_viewer_base_address = "https://${azurerm_public_ip.aca_ingress.fqdn}/ecr_viewer"
 }
 
 resource "random_uuid" "ecr_viewer_unprivileged_read_scope_id" {}
@@ -81,7 +81,9 @@ resource "azuread_application" "ecr_viewer" {
   web {
     homepage_url  = local.ecr_viewer_base_address
     logout_url    = "${local.ecr_viewer_base_address}/logout"
-    redirect_uris = ["${local.ecr_viewer_base_address}/process_zip"]
+    redirect_uris = ["${local.ecr_viewer_base_address}/api/auth/callback/azure-ad",
+                     "http://localhost:3000/ecr-viewer/api/auth/callback/azure-ad",
+                     "https://dev42.dibbs.cloud/ecr-viewer/api/auth/callback/azure-ad"]
   }
 }
 

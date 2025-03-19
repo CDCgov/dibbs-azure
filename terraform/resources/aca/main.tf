@@ -29,7 +29,7 @@ resource "azurerm_container_app_environment" "ce_apps" {
     minimum_count         = 1
   }
 
-  internal_load_balancer_enabled = false
+  internal_load_balancer_enabled = true
 }
 
 /*

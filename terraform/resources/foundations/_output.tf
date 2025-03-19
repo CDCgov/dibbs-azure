@@ -34,3 +34,8 @@ output "azure_storage_connection_string" {
 output "azure_container_name" {
   value = azurerm_storage_container.ecr_data.name
 }
+
+output "key_vault_id" {
+  value = azurerm_key_vault.kv.id
+  depends_on = [time_sleep.wait_for_rbac_propagation]
+}

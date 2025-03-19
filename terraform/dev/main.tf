@@ -44,6 +44,8 @@ module "db" {
   db_subnet_id    = module.networking.subnet_db_id
 
   //tags = local.management_tags
+
+  key_vault_id = module.foundations.key_vault_id
 }
 
 module "container_apps" {
@@ -62,9 +64,9 @@ module "container_apps" {
   acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password
   acr_password = module.foundations.acr_admin_password //TODO: Change to an ACA-specific password
 
-  dibbs_version           = "v1.7.2"
-  query_connector_version = "latest"
-  dibbs_site_version      = "next-acdfc91"
+  dibbs_version           = "v2.0.0-beta"
+  query_connector_version = "main"
+  dibbs_site_version      = "next-cd205c5"
 
   ecr_viewer_db_fqdn      = module.db.ecr_viewer_server_fqdn
   ecr_viewer_db_name      = module.db.ecr_viewer_db_name
@@ -74,7 +76,7 @@ module "container_apps" {
   azure_storage_connection_string = module.foundations.azure_storage_connection_string
   azure_container_name            = module.foundations.azure_container_name
 
-  key_vault_id = module.db.key_vault_id
+  key_vault_id = module.foundations.key_vault_id
 }
 
 

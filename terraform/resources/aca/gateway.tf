@@ -85,7 +85,7 @@ resource "azurerm_application_gateway" "load_balancer" {
   backend_address_pool {
     name = local.aca_backend_pool
     //ip_addresses = [azurerm_container_app_environment.ce_apps.static_ip_address]
-    fqdns = [azurerm_container_app.dibbs_site.latest_revision_fqdn]
+    fqdns = [azurerm_container_app.dibbs_site.ingress[0].fqdn]
   }
 
   backend_http_settings {
@@ -96,13 +96,13 @@ resource "azurerm_application_gateway" "load_balancer" {
     protocol              = "Http"
     request_timeout       = 60
     //host_name             = azurerm_container_app_environment.ce_apps.default_domain
-    host_name = azurerm_container_app.dibbs_site.latest_revision_fqdn
+    host_name = azurerm_container_app.dibbs_site.ingress[0].fqdn
   }
 
   # --- DIBBs Site Settings
   /*backend_address_pool {
     name         = local.dibbs_site_backend_pool
-    fqdns = [azurerm_container_app.dibbs_site.latest_revision_fqdn]
+    fqdns = [azurerm_container_app.dibbs_site.ingress[0].fqdn]
   }
 
   backend_http_settings {
@@ -112,12 +112,12 @@ resource "azurerm_application_gateway" "load_balancer" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
-    host_name = azurerm_container_app.dibbs_site.latest_revision_fqdn
+    host_name = azurerm_container_app.dibbs_site.ingress[0].fqdn
     probe_name            = "dibbs-site-probe"
   }
 
   probe {
-    host                = azurerm_container_app.dibbs_site.latest_revision_fqdn
+    host                = azurerm_container_app.dibbs_site.ingress[0].fqdn
     name                = "dibbs-site-probe"
     protocol            = "Http"
     //path                = "/dibbs-site"
@@ -136,7 +136,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   backend_address_pool {
     name  = local.orchestration_backend_pool
-    fqdns = [azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn]
+    fqdns = [azurerm_container_app.aca_apps["orchestration"].ingress[0].fqdn]
   }
 
   backend_http_settings {
@@ -146,12 +146,12 @@ resource "azurerm_application_gateway" "load_balancer" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 300
-    host_name             = azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn
+    host_name             = azurerm_container_app.aca_apps["orchestration"].ingress[0].fqdn
     probe_name            = "orchestration-probe"
   }
 
   probe {
-    host                = azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn
+    host                = azurerm_container_app.aca_apps["orchestration"].ingress[0].fqdn
     name                = "orchestration-probe"
     protocol            = "Http"
     path                = "/"
@@ -169,7 +169,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   backend_address_pool {
     name  = local.ecr_viewer_backend_pool
-    fqdns = [azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn]
+    fqdns = [azurerm_container_app.aca_apps["ecr-viewer"].ingress[0].fqdn]
   }
 
   backend_http_settings {
@@ -178,12 +178,12 @@ resource "azurerm_application_gateway" "load_balancer" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
-    host_name             = azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn
+    host_name             = azurerm_container_app.aca_apps["ecr-viewer"].ingress[0].fqdn
     probe_name            = "ecr-viewer-probe"
   }
 
   probe {
-    host                = azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn
+    host                = azurerm_container_app.aca_apps["ecr-viewer"].ingress[0].fqdn
     name                = "ecr-viewer-probe"
     protocol            = "Http"
     path                = "/ecr-viewer/api/health-check"
@@ -200,7 +200,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   backend_address_pool {
     name  = local.query_connector_backend_pool
-    fqdns = [azurerm_container_app.query_connector.latest_revision_fqdn]
+    fqdns = [azurerm_container_app.query_connector.ingress[0].fqdn]
   }
 
   backend_http_settings {
@@ -209,12 +209,12 @@ resource "azurerm_application_gateway" "load_balancer" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
-    host_name             = azurerm_container_app.query_connector.latest_revision_fqdn
+    host_name             = azurerm_container_app.query_connector.ingress[0].fqdn
     probe_name            = "query-connector-probe"
   }
 
   probe {
-    host                = azurerm_container_app.query_connector.latest_revision_fqdn
+    host                = azurerm_container_app.query_connector.ingress[0].fqdn
     name                = "query-connector-probe"
     protocol            = "Http"
     path                = "/query-connector"

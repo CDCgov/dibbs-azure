@@ -93,18 +93,6 @@ locals {
 
       target_port = 8080
     }
-    validation = {
-      name        = "validation"
-      cpu         = 0.5
-      memory      = "1Gi"
-      app_version = var.dibbs_version
-
-      is_public = false
-
-      env_vars = []
-
-      target_port = 8080
-    }
     trigger-code-reference = {
       name        = "trigger-code-reference"
       cpu         = 0.5
@@ -135,24 +123,8 @@ locals {
           value = var.azure_container_name
         },
         {
-          name  = "NEXT_PUBLIC_NON_INTEGRATED_VIEWER",
-          value = false
-        },
-        {
-          name  = "SOURCE",
-          value = "azure"
-        },
-        {
-          name  = "APP_ENV",
-          value = "prod"
-        },
-        {
-          name  = "NODE_ENV",
-          value = "production"
-        },
-        {
-          name  = "NEXT_PUBLIC_BASEPATH",
-          value = "/ecr_viewer"
+          name  = "CONFIG_NAME",
+          value = "AZURE_PG_NON_INTEGRATED"
         },
         {
           name  = "NBS_PUB_KEY",
@@ -174,33 +146,13 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
           EOT
         },
         {
-          name  = "METADATA_DATABASE_TYPE",
-          value = "postgres"
-        },
-        {
-          name  = "METADATA_DATABASE_SCHEMA",
-          value = "core"
-        },
-        {
           name  = "DATABASE_URL",
           value = "postgres://${data.azurerm_key_vault_secret.ecr_viewer_db_username.value}:${urlencode(data.azurerm_key_vault_secret.ecr_viewer_db_password.value)}@${var.ecr_viewer_db_fqdn}:${var.ecr_viewer_db_port}/${var.ecr_viewer_db_name}"
-        },
+        }
 
       ]
 
       target_port = 3000
-    }
-    record-linkage = {
-      name        = "record-linkage"
-      cpu         = 0.5
-      memory      = "1Gi"
-      app_version = var.dibbs_version
-
-      is_public = false
-
-      env_vars = []
-
-      target_port = 8080
     }
   }
 
