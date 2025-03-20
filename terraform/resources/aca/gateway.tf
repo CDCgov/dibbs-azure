@@ -212,7 +212,7 @@ resource "azurerm_application_gateway" "load_balancer" {
   }
 }
 
-resource "azurerm_key_vault" "kv" {
+/*resource "azurerm_key_vault" "kv" {
   name                        = "${var.team}${var.project}${var.env}kv"
   location                    = var.location
   resource_group_name         = var.resource_group_name
@@ -238,7 +238,7 @@ resource "azurerm_key_vault_access_policy" "gateway" {
   tenant_id    = data.azurerm_client_config.current.tenant_id
 
   secret_permissions = ["Get"]
-}
+}*/
 
 
 // Gateway analytics

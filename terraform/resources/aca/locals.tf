@@ -124,11 +124,47 @@ locals {
         },
         {
           name  = "CONFIG_NAME",
-          value = "AZURE_INTEGRATED"
+          value = "AZURE_SQLSERVER_NON_INTEGRATED"
         },
         {
           name = "NBS_PUB_KEY"
           value = var.nbs_public_key
+        },
+        {
+          name = "SQL_SERVER_HOST",
+          value = var.ecr_viewer_db_fqdn
+        },
+        {
+          name = "SQL_SERVER_USER",
+          value = data.azurerm_key_vault_secret.ecr_viewer_db_username.value
+        },
+        {
+          name = "SQL_SERVER_PASSWORD",
+          value = data.azurerm_key_vault_secret.ecr_viewer_db_password.value
+        },
+        {
+          name = "AUTH_PROVIDER",
+          value = "ad"
+        },
+        {
+          name = "AUTH_CLIENT_ID",
+          value = data.azurerm_key_vault_secret.ecr_viewer_client_id.value
+        },
+        {
+          name = "AUTH_CLIENT_SECRET",
+          value = data.azurerm_key_vault_secret.ecr_viewer_client_secret.value
+        },
+        {
+          name = "AUTH_TENANT_ID",
+          value = data.azurerm_key_vault_secret.azuread_tenant_id.value
+        },
+        {
+          name = "NEXTAUTH_URL",
+          value = var.nextauth_url
+        },
+        {
+          name = "NEXTAUTH_SECRET",
+          value = data.azurerm_key_vault_secret.ecr_viewer_nextauth_secret.value
         }
       ]
 

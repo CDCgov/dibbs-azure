@@ -94,3 +94,18 @@ variable "nbs_public_key" {
   type       = string
   default = ""
 }
+
+variable "nextauth_url" {
+  description = "The URL for the auth service"
+  type        = string
+}
+
+variable "key_vault_id" {
+  description = "The ID of the key vault to use for secrets"
+  type        = string
+}
+
+variable "ecr_viewer_db_fqdn" {
+  description = "The fully qualified domain name of the database server"
+  type        = string
+}

@@ -47,7 +47,7 @@ module "container_apps" {
   acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password
   acr_password = module.foundations.acr_admin_password //TODO: Change to an ACA-specific password
 
-  dibbs_version = "v2.0.0-beta"
+  dibbs_version = "3.0.0-beta"
 
   azure_storage_connection_string = module.foundations.azure_storage_connection_string
   azure_container_name            = module.foundations.azure_container_name
@@ -68,4 +68,10 @@ hR9rUr59dP2BTlcJ19ZXobLwuJEa81S5BrcbDwYNOAzC8jl2EV1i4bQIwJJaY27X
 Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
 -----END PUBLIC KEY-----
           EOT
+
+  nextauth_url = "https://<YOUR_GATEWAY_DOMAIN_HERE>/ecr_viewer/api/auth"
+
+  key_vault_id = "<YOUR_KEY_VAULT_ID_HERE>" //Update this to match your target key vault
+
+  ecr_viewer_db_fqdn = "<YOUR_DATABASE_FQDN_HERE>" //Update this to match your target database server
 }
