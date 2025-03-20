@@ -91,8 +91,8 @@ variable "azure_container_name" {
 
 variable "nbs_public_key" {
   description = "Public key to use for managing connections to NBS"
-  type       = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "nextauth_url" {

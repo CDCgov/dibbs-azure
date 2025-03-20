@@ -11,8 +11,8 @@ data "azurerm_key_vault_secret" "ecr_viewer_db_password" {
 }
 
 data "azurerm_key_vault_secret" "ecr_viewer_client_id" {
-    name         = "ecr-viewer-client-id"
-    key_vault_id = var.key_vault_id
+  name         = "ecr-viewer-client-id"
+  key_vault_id = var.key_vault_id
 }
 
 data "azurerm_key_vault_secret" "ecr_viewer_client_secret" {

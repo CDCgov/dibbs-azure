@@ -196,7 +196,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   depends_on = [
     azurerm_public_ip.aca_ingress,
-    azurerm_key_vault_access_policy.gateway
+    //azurerm_key_vault_access_policy.gateway
   ]
 
   firewall_policy_id = azurerm_web_application_firewall_policy.aca_waf_policy.id
