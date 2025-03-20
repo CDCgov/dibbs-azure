@@ -155,7 +155,7 @@ locals {
           value = data.azurerm_key_vault_secret.ecr_viewer_client_secret.value
         },
         {
-          name  = "AUTH_TENANT_ID",
+          name  = "AUTH_ISSUER",
           value = data.azurerm_key_vault_secret.azuread_tenant_id.value
         },
         {
