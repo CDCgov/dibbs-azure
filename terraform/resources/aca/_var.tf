@@ -109,3 +109,15 @@ variable "ecr_viewer_db_fqdn" {
   description = "The fully qualified domain name of the database server"
   type        = string
 }
+
+variable "use_ssl" {
+  description = "Boolean to determine if SSL should be used for the eCR Viewer resources. Required for Entra/Azure Active Directory use."
+  type        = bool
+  default     = false
+}
+
+variable "user_assigned_identity_id" {
+  description = "The ID of the user-assigned managed identity to use for the ACA environment"
+  type        = string
+  default     = ""
+}

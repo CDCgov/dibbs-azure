@@ -69,7 +69,11 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
 
   nextauth_url = "https://<YOUR_GATEWAY_DOMAIN_HERE>/ecr_viewer/api/auth"
 
-  key_vault_id = "<YOUR_KEY_VAULT_ID_HERE>" //Update this to match your target key vault
+  key_vault_id = "<YOUR_KEY_VAULT_ID_HERE>" //Update this to match your target key vault.
 
-  ecr_viewer_db_fqdn = "<YOUR_DATABASE_FQDN_HERE>" //Update this to match your target database server
+  ecr_viewer_db_fqdn = "<YOUR_DATABASE_FQDN_HERE>" //Update this to match your target database server.
+
+  use_ssl = true //Set this to false if you do not want to use SSL for the ACA gateway.
+
+  user_assigned_identity_id = "" //Set to the ID of a user-assigned managed identity if you want to use one. If your Service Principal has Entra write access, you can leave this blank.
 }
