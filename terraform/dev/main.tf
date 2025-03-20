@@ -11,8 +11,6 @@ module "foundations" {
   project  = local.project
   env      = local.env
   location = local.location
-
-  resource_group_name = "<YOUR_TARGET_RG_HERE>" //Update this to match your target resource group
 }
 
 module "networking" {
