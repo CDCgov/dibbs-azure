@@ -85,7 +85,7 @@ resource "azurerm_key_vault_secret" "acr_admin_password" {
 }
 
 resource "azurerm_key_vault_secret" "ecr_viewer_nextauth_secret" {
-  name        = "ecr-viewer-nextauth-secret"
+  name         = "ecr-viewer-nextauth-secret"
   value        = random_bytes.ecr_viewer_nextauth_secret.base64
   key_vault_id = azurerm_key_vault.kv.id
 

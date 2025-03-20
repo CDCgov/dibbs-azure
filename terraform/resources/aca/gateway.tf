@@ -28,7 +28,7 @@ resource "azurerm_public_ip" "aca_ingress" {
   domain_name_label = local.name
 }
 
-resource "azurerm_user_assigned_identity" "gateway" {
+resource "azurerm_user_assigned_identity" "gateway" { //TODO: this may be problematic. Add toggle for this.
   name                = "dibbs-${var.env}-gateway"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -58,7 +58,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.gateway.id]
+    identity_ids = [azurerm_user_assigned_identity.gateway.id] //TODO: add identity in a variable
   }
 
   frontend_ip_configuration {
@@ -77,6 +77,35 @@ resource "azurerm_application_gateway" "load_balancer" {
     frontend_ip_configuration_name = local.frontend_config
     frontend_port_name             = local.http_listener
     protocol                       = "Http"
+  }
+
+  # --- HTTPS Listener (Make dependent on count = var.use_ssl ? 1 : 0)
+  dynamic "frontend_port" {
+    for_each = var.use_ssl ? [1] : []
+    content {
+      name = local.https_listener
+      port = 443
+    }
+  }
+
+  dynamic "http_listener" {
+    for_each = var.use_ssl ? [1] : []
+    content {
+      name                           = local.https_listener
+      frontend_ip_configuration_name = local.frontend_config
+      frontend_port_name             = local.https_listener
+      protocol                       = "Https"
+      ssl_certificate_name           = "dibbs-site-cert"
+    }
+  }
+
+  dynamic "ssl_certificate" {
+    for_each = var.use_ssl ? [1] : []
+
+    content {
+      name                = "dibbs-site-cert"
+      key_vault_secret_id = data.azurerm_key_vault_certificate.dibbs_site_cert[0].secret_id
+    }
   }
 
 
@@ -237,6 +266,19 @@ resource "azurerm_application_gateway" "load_balancer" {
     backend_address_pool_name  = local.aca_backend_pool
     backend_http_settings_name = local.aca_backend_http_setting
     url_path_map_name          = "${local.name}-urlmap"
+  }
+
+  dynamic "request_routing_rule" {
+    for_each = var.use_ssl ? [1] : []
+    content {
+      name                       = "${local.name}-routing-https"
+      priority                   = 100
+      rule_type                  = "PathBasedRouting"
+      http_listener_name         = local.https_listener
+      backend_address_pool_name  = local.aca_backend_pool
+      backend_http_settings_name = local.aca_backend_http_setting
+      url_path_map_name          = "${local.name}-urlmap"
+    }
   }
 
   url_path_map {

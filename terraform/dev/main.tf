@@ -78,7 +78,9 @@ module "container_apps" {
 
   key_vault_id = module.foundations.key_vault_id
 
-  nextauth_url = "http://skylight-dibbs-dev.eastus2.cloudapp.azure.com/ecr-viewer/api/auth"
+  nextauth_url = "https://skylight-dibbs-dev.eastus2.cloudapp.azure.com/ecr-viewer/api/auth"
+
+  use_ssl = true
 }
 
 
