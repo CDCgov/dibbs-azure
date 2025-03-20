@@ -64,7 +64,7 @@ module "container_apps" {
   acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password
   acr_password = module.foundations.acr_admin_password //TODO: Change to an ACA-specific password
 
-  dibbs_version           = "v2.0.0-beta"
+  dibbs_version           = "3.0.0-beta"
   query_connector_version = "main"
   dibbs_site_version      = "next-cd205c5"
 
@@ -77,6 +77,8 @@ module "container_apps" {
   azure_container_name            = module.foundations.azure_container_name
 
   key_vault_id = module.foundations.key_vault_id
+
+  nextauth_url = "http://skylight-dibbs-dev.eastus2.cloudapp.azure.com/ecr-viewer/api/auth"
 }
 
 

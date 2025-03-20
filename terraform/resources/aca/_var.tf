@@ -159,3 +159,8 @@ variable "query_connector_db_port" {
   description = "Port for the Query Connector RDS Instance"
   default     = 5432
 }
+
+variable "nextauth_url" {
+  description = "The URL for the auth service"
+  type        = string
+}

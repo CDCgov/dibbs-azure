@@ -20,4 +20,14 @@ data "azurerm_key_vault_secret" "query_connector_db_password" {
   key_vault_id = var.key_vault_id
 }
 
+data "azurerm_key_vault_secret" "ecr_viewer_nextauth_secret" {
+  name         = "ecr-viewer-nextauth-secret"
+  key_vault_id = var.key_vault_id
+}
+
+data "azurerm_key_vault_secret" "ecr_viewer_client_secret" {
+  name         = "ecr-viewer-client-secret"
+  key_vault_id = var.key_vault_id
+}
+
 data "azuread_client_config" "current" {}

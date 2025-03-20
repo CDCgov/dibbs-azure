@@ -148,6 +148,31 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
         {
           name  = "DATABASE_URL",
           value = "postgres://${data.azurerm_key_vault_secret.ecr_viewer_db_username.value}:${urlencode(data.azurerm_key_vault_secret.ecr_viewer_db_password.value)}@${var.ecr_viewer_db_fqdn}:${var.ecr_viewer_db_port}/${var.ecr_viewer_db_name}"
+        },
+        {
+          name = "AUTH_PROVIDER",
+          value = "ad"
+        },
+        {
+          name = "AUTH_CLIENT_ID",
+          value = azuread_application.ecr_viewer.client_id
+        },
+        {
+          name = "AUTH_CLIENT_SECRET",
+          value = data.azurerm_key_vault_secret.ecr_viewer_client_secret.value
+        },
+        {
+          name = "AUTH_TENANT_ID",
+          value = data.azuread_client_config.current.tenant_id
+        },
+        {
+          name = "NEXTAUTH_URL",
+          //value = "https://${azurerm_container_app_environment.ce_apps.default_domain}/ecr_viewer/api/auth"
+          value = var.nextauth_url
+        },
+        {
+          name = "NEXTAUTH_SECRET",
+          value = data.azurerm_key_vault_secret.ecr_viewer_nextauth_secret.value
         }
 
       ]
