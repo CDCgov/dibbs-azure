@@ -29,7 +29,7 @@ resource "azurerm_public_ip" "aca_ingress" {
 }
 
 resource "azurerm_user_assigned_identity" "gateway" {
-  count = var.user_assigned_identity_id == "" ? 0 : 1 // Only create if not provided
+  count               = var.user_assigned_identity_id == "" ? 0 : 1 // Only create if not provided
   name                = "dibbs-${var.env}-gateway"
   location            = var.location
   resource_group_name = var.resource_group_name
