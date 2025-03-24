@@ -165,6 +165,10 @@ locals {
         {
           name  = "NEXTAUTH_SECRET",
           value = data.azurerm_key_vault_secret.ecr_viewer_nextauth_secret.value
+        },
+        {
+          name = "ORCHESTRATION_URL",
+          value = "http://orchestration.${azurerm_container_app_environment.ce_apps.default_domain}"
         }
       ]
 
