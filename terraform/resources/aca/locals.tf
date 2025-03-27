@@ -127,8 +127,12 @@ locals {
           value = "AZURE_INTEGRATED"
         },
         {
-          name = "NBS_PUB_KEY"
+          name = "NBS_PUB_KEY",
           value = var.nbs_public_key
+        },
+        {
+          name = "ORCHESTRATION_URL",
+          value = "http://orchestration.${azurerm_container_app_environment.ce_apps.default_domain}/orchestration"
         }
       ]
 
