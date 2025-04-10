@@ -143,6 +143,10 @@ locals {
           value = data.azurerm_key_vault_secret.ecr_viewer_db_password.value
         },
         {
+          name = "DATABASE_URL",
+          value = "Server=${var.ecr_viewer_db_fqdn};Database=${var.ecr_viewer_db_name};User Id=${data.azurerm_key_vault_secret.ecr_viewer_db_username.value};Password=${data.azurerm_key_vault_secret.ecr_viewer_db_password.value}"
+        },
+        {
           name  = "AUTH_PROVIDER",
           value = "ad"
         },

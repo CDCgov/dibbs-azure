@@ -1,5 +1,5 @@
 locals {
-  team     = "skylight" //Update this to match your chosen prefix
+  team     = "cdph" //Update this to match your chosen prefix
   project  = "dibbs"
   env      = "dev"
   location = "eastus" //Update this to match your chosen region
@@ -45,7 +45,7 @@ module "container_apps" {
   acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password
   acr_password = module.foundations.acr_admin_password //TODO: Change to an ACA-specific password
 
-  dibbs_version = "3.0.0-beta"
+  dibbs_version = "3.1.0"
 
   azure_storage_connection_string = module.foundations.azure_storage_connection_string
   azure_container_name            = module.foundations.azure_container_name
@@ -67,13 +67,15 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
 -----END PUBLIC KEY-----
           EOT
 
-  nextauth_url = "https://<YOUR_GATEWAY_DOMAIN_HERE>/ecr_viewer/api/auth"
+  nextauth_url = "https://${local.team}-${local.project}-${local.env}.${local.location}.cloudapp.azure.com/ecr-viewer/api/auth"
 
-  key_vault_id = "<YOUR_KEY_VAULT_ID_HERE>" //Update this to match your target key vault.
+  key_vault_id = "<UPDATE_ME>" //Update this to match your target key vault. Follows the longform format: "/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.KeyVault/vaults/{key-vault-name}"
 
-  ecr_viewer_db_fqdn = "<YOUR_DATABASE_FQDN_HERE>" //Update this to match your target database server.
+  ecr_viewer_db_fqdn = "<UPDATE_ME>" //Update this to match your target database server. Omit the protocol and port number.
+
+  ecr_viewer_db_name = "ecr-viewer" //Update this to match the name of your desired database on the SQL instance.
 
   use_ssl = true //Set this to false if you do not want to use SSL for the ACA gateway.
 
-  user_assigned_identity_id = "" //Set to the ID of a user-assigned managed identity if you want to use one. If your Service Principal has Entra write access, you can leave this blank.
+  pre_assigned_identity_id = "<UPDATE_ME>" //Set to the ID of a user-assigned managed identity for your gateway if you want to use one. Follows the longform format: "/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identity-name}"
 }

@@ -33,5 +33,5 @@ data "azurerm_key_vault_secret" "azuread_tenant_id" {
 data "azurerm_key_vault_certificate" "dibbs_site_cert" {
   count        = var.use_ssl ? 1 : 0
   name         = "dibbs-site-cert"
-  key_vault_id = ""
+  key_vault_id = var.key_vault_id
 }

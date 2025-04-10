@@ -29,7 +29,7 @@ resource "azurerm_public_ip" "aca_ingress" {
 }
 
 resource "azurerm_user_assigned_identity" "gateway" {
-  count               = var.user_assigned_identity_id == "" ? 0 : 1 // Only create if not provided
+  count               = var.pre_assigned_identity_id == "" ? 1 : 0 // Only create if not provided
   name                = "dibbs-${var.env}-gateway"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -59,7 +59,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = [coalesce(var.user_assigned_identity_id, azurerm_user_assigned_identity.gateway.id)]
+    identity_ids = [try(coalesce(var.pre_assigned_identity_id, azurerm_user_assigned_identity.gateway[0].id), var.pre_assigned_identity_id)]
   }
 
   frontend_ip_configuration {

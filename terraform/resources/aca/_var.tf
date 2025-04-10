@@ -110,14 +110,20 @@ variable "ecr_viewer_db_fqdn" {
   type        = string
 }
 
+variable "ecr_viewer_db_name" {
+  description = "The name of the database to use for the eCR Viewer"
+  type        = string
+  default     = "ecr-viewer"
+}
+
 variable "use_ssl" {
   description = "Boolean to determine if SSL should be used for the eCR Viewer resources. Required for Entra/Azure Active Directory use."
   type        = bool
   default     = false
 }
 
-variable "user_assigned_identity_id" {
-  description = "The ID of the user-assigned managed identity to use for the ACA environment"
+variable "pre_assigned_identity_id" {
+  description = "The ID of the pre-assigned managed identity to use for the ACA environment"
   type        = string
   default     = ""
 }
