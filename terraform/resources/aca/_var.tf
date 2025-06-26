@@ -89,6 +89,12 @@ variable "azure_container_name" {
   type        = string
 }
 
+variable "nbs_api_public_key" {
+  description = "Public key to use for managing API connections to NBS"
+  type        = string
+  default     = ""
+}
+
 variable "nbs_public_key" {
   description = "Public key to use for managing connections to NBS"
   type        = string
@@ -126,4 +132,9 @@ variable "pre_assigned_identity_id" {
   description = "The ID of the pre-assigned managed identity to use for the ACA environment"
   type        = string
   default     = ""
+}
+
+variable "ecr_viewer_mode" {
+  description = "The configuration template to use for the eCR Viewer."
+  type        = string
 }

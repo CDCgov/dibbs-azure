@@ -124,7 +124,11 @@ locals {
         },
         {
           name  = "CONFIG_NAME",
-          value = "AZURE_SQLSERVER_NON_INTEGRATED"
+          value = var.ecr_viewer_mode
+        },
+        {
+          name = "NBS_API_PUB_KEY",
+          value = var.nbs_api_public_key
         },
         {
           name  = "NBS_PUB_KEY"
@@ -173,22 +177,14 @@ locals {
         {
           name  = "ORCHESTRATION_URL",
           value = "http://orchestration.${azurerm_container_app_environment.ce_apps.default_domain}"
+        },
+        {
+          name = "METADATA_DATABASE_MIGRATION_SECRET",
+          value = data.azurerm_key_vault_secret.ecr_viewer_migration_secret.value
         }
       ]
 
       target_port = 3000
-    }
-    record-linkage = {
-      name        = "record-linkage"
-      cpu         = 0.5
-      memory      = "1Gi"
-      app_version = var.dibbs_version
-
-      is_public = false
-
-      env_vars = []
-
-      target_port = 8080
     }
   }
 
