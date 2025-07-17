@@ -70,10 +70,6 @@ locals {
           value = "http://ingestion.internal.${azurerm_container_app_environment.ce_apps.default_domain}"
         },
         {
-          name  = "VALIDATION_URL",
-          value = "http://validation.internal.${azurerm_container_app_environment.ce_apps.default_domain}"
-        },
-        {
           name  = "FHIR_CONVERTER_URL",
           value = "http://fhir-converter.internal.${azurerm_container_app_environment.ce_apps.default_domain}"
         },
@@ -177,6 +173,10 @@ locals {
         {
           name  = "ORCHESTRATION_URL",
           value = "http://orchestration.${azurerm_container_app_environment.ce_apps.default_domain}"
+        },
+        {
+          name = "METADATA_DATABASE_MIGRATION_SECRET",
+          value = var.migration_secret
         }
       ]
 

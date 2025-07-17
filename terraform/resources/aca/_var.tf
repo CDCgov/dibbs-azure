@@ -138,3 +138,9 @@ variable "ecr_viewer_mode" {
   description = "The configuration template to use for the eCR Viewer."
   type        = string
 }
+
+variable "migration_secret" {
+  description = "The secret to use for database migrations. If not set, a secret will be generated and made available in container logs."
+  type        = string
+  default     = ""
+}
