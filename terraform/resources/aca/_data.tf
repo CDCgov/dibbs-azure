@@ -10,6 +10,11 @@ data "azurerm_key_vault_secret" "ecr_viewer_db_password" {
   key_vault_id = var.key_vault_id
 }
 
+data "azurerm_key_vault_secret" "ecr_viewer_migration_secret" {
+  name         = "ecr-viewer-migration-secret"
+  key_vault_id = var.key_vault_id
+}
+
 data "azurerm_key_vault_secret" "ecr_viewer_client_id" {
   name         = "ecr-viewer-client-id"
   key_vault_id = var.key_vault_id

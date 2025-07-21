@@ -176,7 +176,7 @@ locals {
         },
         {
           name = "METADATA_DATABASE_MIGRATION_SECRET",
-          value = var.migration_secret
+          value = data.azurerm_key_vault_secret.ecr_viewer_migration_secret.value
         }
       ]
 
