@@ -47,7 +47,7 @@ module "container_apps" {
   acr_username = module.foundations.acr_admin_username //TODO: Change to an ACA-specific password
   acr_password = module.foundations.acr_admin_password //TODO: Change to an ACA-specific password
 
-  dibbs_version = "6.0.0"
+  dibbs_version = "7.0.0"
 
   azure_storage_connection_string = module.foundations.azure_storage_connection_string
   azure_container_name            = module.foundations.azure_container_name
