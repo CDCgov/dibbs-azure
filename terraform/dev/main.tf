@@ -96,4 +96,5 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
 
   use_ssl = true //Set this to false if you do not want to use SSL for the ACA gateway.
 
+  pre_assigned_identity_id = "<UPDATE_ME>" //Set to the ID of a user-assigned managed identity for your gateway if you want to use one. Follows the longform format: "/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identity-name}"
 }
