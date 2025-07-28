@@ -143,7 +143,7 @@ locals {
           value = data.azurerm_key_vault_secret.ecr_viewer_db_password.value
         },
         {
-          name = "DATABASE_URL",
+          name  = "DATABASE_URL",
           value = "Server=${var.ecr_viewer_db_fqdn};Database=${var.ecr_viewer_db_name};User Id=${data.azurerm_key_vault_secret.ecr_viewer_db_username.value};Password=${data.azurerm_key_vault_secret.ecr_viewer_db_password.value}"
         },
         {
@@ -175,7 +175,7 @@ locals {
           value = "http://orchestration.${azurerm_container_app_environment.ce_apps.default_domain}"
         },
         {
-          name = "METADATA_DATABASE_MIGRATION_SECRET",
+          name  = "METADATA_DATABASE_MIGRATION_SECRET",
           value = data.azurerm_key_vault_secret.ecr_viewer_migration_secret.value
         }
       ]
