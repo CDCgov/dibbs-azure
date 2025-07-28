@@ -241,7 +241,6 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   depends_on = [
     azurerm_public_ip.aca_ingress,
-    //azurerm_key_vault_access_policy.gateway
   ]
 
   firewall_policy_id = azurerm_web_application_firewall_policy.aca_waf_policy.id
@@ -256,35 +255,6 @@ resource "azurerm_application_gateway" "load_balancer" {
     ]
   }
 }
-
-/*resource "azurerm_key_vault" "kv" {
-  name                        = "${var.team}${var.project}${var.env}kv"
-  location                    = var.location
-  resource_group_name         = var.resource_group_name
-  enabled_for_disk_encryption = true
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 7
-  purge_protection_enabled    = false
-
-  sku_name = "standard"
-
-  //It's recommended to set an access control list for the key vault. The network_acls block can be removed if your needs require it.
-  network_acls {
-    bypass                     = "AzureServices"
-    default_action             = "Deny"
-    virtual_network_subnet_ids = [var.aca_subnet_id, var.appgw_subnet_id]
-  }
-
-}
-
-resource "azurerm_key_vault_access_policy" "gateway" {
-  key_vault_id = azurerm_key_vault.kv.id
-  object_id    = azurerm_user_assigned_identity.gateway.principal_id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-
-  secret_permissions = ["Get"]
-}*/
-
 
 // Gateway analytics
 resource "azurerm_monitor_diagnostic_setting" "logs_metrics" {
