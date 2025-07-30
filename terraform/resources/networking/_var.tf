@@ -31,7 +31,7 @@ variable "network_address_space" {
 
 variable "aca_subnet_address_prefixes" {
   type        = list(string)
-  description = "Load balancer subnet IP address space."
+  description = "Container Apps Environment subnet IP address space. Ensure adequate space for internal load balancer, initial nodes, and future scaling."
   default     = ["10.30.0.0/25"]
 }
 
