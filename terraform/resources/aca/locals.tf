@@ -70,10 +70,6 @@ locals {
           value = "http://ingestion.internal.${azurerm_container_app_environment.ce_apps.default_domain}"
         },
         {
-          name  = "VALIDATION_URL",
-          value = "http://validation.internal.${azurerm_container_app_environment.ce_apps.default_domain}"
-        },
-        {
           name  = "FHIR_CONVERTER_URL",
           value = "http://fhir-converter.internal.${azurerm_container_app_environment.ce_apps.default_domain}"
         },
@@ -90,18 +86,6 @@ locals {
           value = "http://trigger-code-reference.internal.${azurerm_container_app_environment.ce_apps.default_domain}"
         }
       ]
-
-      target_port = 8080
-    }
-    validation = {
-      name        = "validation"
-      cpu         = 0.5
-      memory      = "1Gi"
-      app_version = var.dibbs_version
-
-      is_public = false
-
-      env_vars = []
 
       target_port = 8080
     }
@@ -135,40 +119,68 @@ locals {
           value = var.azure_container_name
         },
         {
-          name  = "NEXT_PUBLIC_NON_INTEGRATED_VIEWER",
-          value = false
+          name  = "CONFIG_NAME",
+          value = var.ecr_viewer_mode
         },
         {
-          name  = "SOURCE",
-          value = "azure"
+          name  = "NBS_API_PUB_KEY",
+          value = var.nbs_api_public_key
         },
         {
-          name  = "APP_ENV",
-          value = "test"
+          name  = "NBS_PUB_KEY",
+          value = var.nbs_public_key
         },
         {
-          name  = "NODE_ENV",
-          value = "production"
+          name  = "SQL_SERVER_HOST",
+          value = var.ecr_viewer_db_fqdn
         },
         {
-          name  = "NEXT_PUBLIC_BASEPATH",
-          value = "/ecr_viewer"
+          name  = "SQL_SERVER_USER",
+          value = data.azurerm_key_vault_secret.ecr_viewer_db_username.value
+        },
+        {
+          name  = "SQL_SERVER_PASSWORD",
+          value = data.azurerm_key_vault_secret.ecr_viewer_db_password.value
+        },
+        {
+          name  = "DATABASE_URL",
+          value = "Server=${var.ecr_viewer_db_fqdn};Database=${var.ecr_viewer_db_name};User Id=${data.azurerm_key_vault_secret.ecr_viewer_db_username.value};Password=${data.azurerm_key_vault_secret.ecr_viewer_db_password.value}"
+        },
+        {
+          name  = "AUTH_PROVIDER",
+          value = "ad"
+        },
+        {
+          name  = "AUTH_CLIENT_ID",
+          value = data.azurerm_key_vault_secret.ecr_viewer_client_id.value
+        },
+        {
+          name  = "AUTH_CLIENT_SECRET",
+          value = data.azurerm_key_vault_secret.ecr_viewer_client_secret.value
+        },
+        {
+          name  = "AUTH_ISSUER",
+          value = data.azurerm_key_vault_secret.azuread_tenant_id.value
+        },
+        {
+          name  = "NEXTAUTH_URL",
+          value = var.nextauth_url
+        },
+        {
+          name  = "NEXTAUTH_SECRET",
+          value = data.azurerm_key_vault_secret.ecr_viewer_nextauth_secret.value
+        },
+        {
+          name  = "ORCHESTRATION_URL",
+          value = "http://orchestration.${azurerm_container_app_environment.ce_apps.default_domain}"
+        },
+        {
+          name  = "METADATA_DATABASE_MIGRATION_SECRET",
+          value = data.azurerm_key_vault_secret.ecr_viewer_migration_secret.value
         }
       ]
 
       target_port = 3000
-    }
-    record-linkage = {
-      name        = "record-linkage"
-      cpu         = 0.5
-      memory      = "1Gi"
-      app_version = var.dibbs_version
-
-      is_public = false
-
-      env_vars = []
-
-      target_port = 8080
     }
   }
 

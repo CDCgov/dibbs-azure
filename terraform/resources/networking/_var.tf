@@ -25,26 +25,18 @@ variable "resource_group_name" {
 
 variable "network_address_space" {
   description = "The desired address space for the full virtual network"
-  type        = string
-  default     = "10.30.0.0/16"
+  type        = list(string)
+  default     = ["10.30.0.0/24"]
 }
 
-variable "app_gateway_subnet_address_prefix" {
-  type        = string
+variable "aca_subnet_address_prefixes" {
+  type        = list(string)
+  description = "Container Apps Environment subnet IP address space. Ensure adequate space for internal load balancer, initial nodes, and future scaling."
+  default     = ["10.30.0.0/25"]
+}
+
+variable "app_gateway_subnet_address_prefixes" {
+  type        = list(string)
   description = "App gateway subnet server IP address space."
-  default     = "10.30.5.0/24"
+  default     = ["10.30.0.128/25"]
 }
-
-variable "lb_subnet_address_prefix" {
-  type        = string
-  description = "Load balancer subnet IP address space."
-  default     = "10.30.7.0/25"
-}
-
-variable "aca_subnet_address_prefix" {
-  type        = string
-  description = "Load balancer subnet IP address space."
-  default     = "10.30.7.128/25"
-}
-
-

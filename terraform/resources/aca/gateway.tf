@@ -29,6 +29,7 @@ resource "azurerm_public_ip" "aca_ingress" {
 }
 
 resource "azurerm_user_assigned_identity" "gateway" {
+  count               = var.pre_assigned_identity_id == "" ? 1 : 0 // Only create if not provided
   name                = "dibbs-${var.env}-gateway"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -58,7 +59,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.gateway.id]
+    identity_ids = [try(coalesce(var.pre_assigned_identity_id, azurerm_user_assigned_identity.gateway[0].id), var.pre_assigned_identity_id)]
   }
 
   frontend_ip_configuration {
@@ -77,6 +78,37 @@ resource "azurerm_application_gateway" "load_balancer" {
     frontend_ip_configuration_name = local.frontend_config
     frontend_port_name             = local.http_listener
     protocol                       = "Http"
+  }
+
+  # --- HTTPS Listener (only if SSL is enabled)
+  dynamic "frontend_port" {
+    for_each = var.use_ssl ? [1] : []
+    content {
+      name = local.https_listener
+      port = 443
+    }
+  }
+
+
+  dynamic "http_listener" {
+    for_each = var.use_ssl ? [1] : []
+    content {
+      name                           = local.https_listener
+      frontend_ip_configuration_name = local.frontend_config
+      frontend_port_name             = local.https_listener
+      protocol                       = "Https"
+      ssl_certificate_name           = "dibbs-site-cert"
+    }
+  }
+
+
+  dynamic "ssl_certificate" {
+    for_each = var.use_ssl ? [1] : []
+
+    content {
+      name                = "dibbs-site-cert"
+      key_vault_secret_id = data.azurerm_key_vault_certificate.dibbs_site_cert[0].secret_id
+    }
   }
 
   # --- Container Environment Pool
@@ -100,7 +132,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   backend_address_pool {
     name  = local.orchestration_backend_pool
-    fqdns = [azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn]
+    fqdns = [azurerm_container_app.aca_apps["orchestration"].ingress[0].fqdn]
   }
 
   backend_http_settings {
@@ -110,12 +142,12 @@ resource "azurerm_application_gateway" "load_balancer" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 300
-    host_name             = azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn
+    host_name             = azurerm_container_app.aca_apps["orchestration"].ingress[0].fqdn
     probe_name            = "orchestration-probe"
   }
 
   probe {
-    host                = azurerm_container_app.aca_apps["orchestration"].latest_revision_fqdn
+    host                = azurerm_container_app.aca_apps["orchestration"].ingress[0].fqdn
     name                = "orchestration-probe"
     protocol            = "Http"
     path                = "/"
@@ -133,7 +165,7 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   backend_address_pool {
     name  = local.ecr_viewer_backend_pool
-    fqdns = [azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn]
+    fqdns = [azurerm_container_app.aca_apps["ecr-viewer"].ingress[0].fqdn]
   }
 
   backend_http_settings {
@@ -142,12 +174,12 @@ resource "azurerm_application_gateway" "load_balancer" {
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
-    host_name             = azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn
+    host_name             = azurerm_container_app.aca_apps["ecr-viewer"].ingress[0].fqdn
     probe_name            = "ecr-viewer-probe"
   }
 
   probe {
-    host                = azurerm_container_app.aca_apps["ecr-viewer"].latest_revision_fqdn
+    host                = azurerm_container_app.aca_apps["ecr-viewer"].ingress[0].fqdn
     name                = "ecr-viewer-probe"
     protocol            = "Http"
     path                = "/ecr-viewer/api/health-check"
@@ -173,6 +205,19 @@ resource "azurerm_application_gateway" "load_balancer" {
     url_path_map_name          = "${local.name}-urlmap"
   }
 
+  dynamic "request_routing_rule" {
+    for_each = var.use_ssl ? [1] : []
+    content {
+      name                       = "${local.name}-routing-https"
+      priority                   = 100
+      rule_type                  = "PathBasedRouting"
+      http_listener_name         = local.https_listener
+      backend_address_pool_name  = local.aca_backend_pool
+      backend_http_settings_name = local.aca_backend_http_setting
+      url_path_map_name          = "${local.name}-urlmap"
+    }
+  }
+
   url_path_map {
     name                               = "${local.name}-urlmap"
     default_backend_address_pool_name  = local.aca_backend_pool
@@ -196,7 +241,6 @@ resource "azurerm_application_gateway" "load_balancer" {
 
   depends_on = [
     azurerm_public_ip.aca_ingress,
-    azurerm_key_vault_access_policy.gateway
   ]
 
   firewall_policy_id = azurerm_web_application_firewall_policy.aca_waf_policy.id
@@ -211,35 +255,6 @@ resource "azurerm_application_gateway" "load_balancer" {
     ]
   }
 }
-
-resource "azurerm_key_vault" "kv" {
-  name                        = "${var.team}${var.project}${var.env}kv"
-  location                    = var.location
-  resource_group_name         = var.resource_group_name
-  enabled_for_disk_encryption = true
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 7
-  purge_protection_enabled    = false
-
-  sku_name = "standard"
-
-  //It's recommended to set an access control list for the key vault. The network_acls block can be removed if your needs require it.
-  network_acls {
-    bypass                     = "AzureServices"
-    default_action             = "Deny"
-    virtual_network_subnet_ids = [var.aca_subnet_id, var.appgw_subnet_id]
-  }
-
-}
-
-resource "azurerm_key_vault_access_policy" "gateway" {
-  key_vault_id = azurerm_key_vault.kv.id
-  object_id    = azurerm_user_assigned_identity.gateway.principal_id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-
-  secret_permissions = ["Get"]
-}
-
 
 // Gateway analytics
 resource "azurerm_monitor_diagnostic_setting" "logs_metrics" {

@@ -76,7 +76,7 @@ variable "dibbs_version" {
 variable "ghcr_string" {
   description = "The string to use for the source GitHub Container Registry"
   type        = string
-  default     = "ghcr.io/cdcgov/phdi/"
+  default     = "ghcr.io/cdcgov/dibbs-ecr-viewer/"
 }
 
 variable "azure_storage_connection_string" {
@@ -87,4 +87,60 @@ variable "azure_storage_connection_string" {
 variable "azure_container_name" {
   description = "The name of the Azure Storage container for eCR processing"
   type        = string
+}
+
+variable "nbs_api_public_key" {
+  description = "Public key to use for managing API connections to NBS"
+  type        = string
+  default     = ""
+}
+
+variable "nbs_public_key" {
+  description = "Public key to use for managing connections to NBS"
+  type        = string
+  default     = ""
+}
+
+variable "nextauth_url" {
+  description = "The URL for the auth service"
+  type        = string
+}
+
+variable "key_vault_id" {
+  description = "The ID of the key vault to use for secrets"
+  type        = string
+}
+
+variable "ecr_viewer_db_fqdn" {
+  description = "The fully qualified domain name of the database server"
+  type        = string
+}
+
+variable "ecr_viewer_db_name" {
+  description = "The name of the database to use for the eCR Viewer"
+  type        = string
+  default     = "ecr-viewer"
+}
+
+variable "use_ssl" {
+  description = "Boolean to determine if SSL should be used for the eCR Viewer resources. Required for Entra/Azure Active Directory use."
+  type        = bool
+  default     = false
+}
+
+variable "pre_assigned_identity_id" {
+  description = "The ID of the pre-assigned managed identity to use for the ACA environment"
+  type        = string
+  default     = ""
+}
+
+variable "ecr_viewer_mode" {
+  description = "The configuration template to use for the eCR Viewer."
+  type        = string
+}
+
+variable "migration_secret" {
+  description = "The secret to use for database migrations. If not set, a secret will be generated and made available in container logs."
+  type        = string
+  default     = ""
 }

@@ -1,6 +1,6 @@
 terraform {
   backend "azurerm" {
-    resource_group_name  = "skylight-dibbs-global"
+    resource_group_name  = "<INSERT_STORAGE_RG_HERE>"
     storage_account_name = "dibbsstatestorage"
     container_name       = "ce-tfstate"
     key                  = "dev/terraform.tfstate"

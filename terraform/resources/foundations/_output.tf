@@ -1,13 +1,13 @@
 output "resource_group_name" {
-  value = azurerm_resource_group.rg.name
+  value = var.resource_group_name != null ? data.azurerm_resource_group.rg[0].name : azurerm_resource_group.rg[0].name
 }
 
 output "resource_group_location" {
-  value = azurerm_resource_group.rg.location
+  value = var.resource_group_name != null ? data.azurerm_resource_group.rg[0].location : azurerm_resource_group.rg[0].location
 }
 
 output "resource_group_id" {
-  value = azurerm_resource_group.rg.id
+  value = var.resource_group_name != null ? data.azurerm_resource_group.rg[0].id : azurerm_resource_group.rg[0].id
 }
 
 output "acr_name" {
