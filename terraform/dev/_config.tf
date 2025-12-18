@@ -1,9 +1,9 @@
 terraform {
   backend "azurerm" {
-    resource_group_name  = "<INSERT_STORAGE_RG_HERE>"
-    storage_account_name = "dibbsstatestorage"
+    resource_group_name  = "shanice-new-ecrv"
+    storage_account_name = "shanicestorageaccount"
     container_name       = "ce-tfstate"
-    key                  = "dev/terraform.tfstate"
+    key                  = "test/terraform.tfstate"
   }
   required_providers {
     azurerm = {
