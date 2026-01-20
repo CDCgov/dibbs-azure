@@ -45,7 +45,7 @@ module "container_apps" {
   acr_username = module.foundations.acr_admin_username
   acr_password = module.foundations.acr_admin_password
 
-  dibbs_version = "7.0.0"
+  dibbs_version = "8.5.0"
 
   azure_storage_connection_string = module.foundations.azure_storage_connection_string
   azure_container_name            = module.foundations.azure_container_name
