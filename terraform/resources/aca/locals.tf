@@ -177,6 +177,20 @@ locals {
         {
           name  = "METADATA_DATABASE_MIGRATION_SECRET",
           value = data.azurerm_key_vault_secret.ecr_viewer_migration_secret.value
+        },
+        {
+
+          name = "ECR_PROCESSING_TIMEOUT",
+
+          value = var.ecr_processing_timeout
+
+        },
+        {
+
+          name = "DISPLAY_FEEDBACK_LINKS",
+
+          value = var.display_feedback_links
+
         }
       ]
 
