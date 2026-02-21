@@ -144,3 +144,15 @@ variable "migration_secret" {
   type        = string
   default     = ""
 }
+
+variable "ecr_processing_timeout" {
+  type        = string
+  description = "Set processing timeout length in ms,if not set defaults to 900000ms (15min)"
+  default     = "900000"
+}
+
+variable "display_feedback_links" {
+  description = "Display email link and touchpoints survey, If not set they are disabled, default is set to false "
+  type        = string
+  default     = "false"
+}
