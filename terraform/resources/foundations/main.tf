@@ -29,6 +29,10 @@ resource "azurerm_storage_account" "app" {
   min_tls_version                  = "TLS1_2"
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
+
+   network_rules {
+    default_action             = "Deny"
+  }
 }
 
 resource "azurerm_storage_container" "ecr_data" {
