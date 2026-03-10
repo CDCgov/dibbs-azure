@@ -32,6 +32,9 @@ resource "azurerm_storage_account" "app" {
 
   network_rules {
     default_action = "Deny"
+    # If specifying network_rules, one of either ip_rules or virtual_network_subnet_ids must 
+    # be specified and default_action must be set to Deny.
+    ip_rules = ""
   }
 }
 
