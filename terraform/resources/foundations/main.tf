@@ -29,13 +29,6 @@ resource "azurerm_storage_account" "app" {
   min_tls_version                  = "TLS1_2"
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
-
-  network_rules {
-    default_action = "Deny"
-    # If specifying network_rules, one of either ip_rules or virtual_network_subnet_ids must 
-    # be specified and default_action must be set to Deny.
-    ip_rules = ""
-  }
 }
 
 resource "azurerm_storage_container" "ecr_data" {
