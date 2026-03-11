@@ -32,7 +32,8 @@ resource "azurerm_storage_account" "app" {
 
   network_rules {
     default_action             = "Deny"
-    virtual_network_subnet_ids = var.vnet_subnet_ids
+    ip_rules                   = var.ip_rules
+    # virtual_network_subnet_ids = var.vnet_subnet_ids
     bypass                     = ["AzureServices"]
     # ip_rules = [] # To browse or manage storage data directly in the Azure Portal,add your local machine's public IP address to the ip_rules list.
   }

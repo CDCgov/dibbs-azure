@@ -10,6 +10,6 @@ output "network" {
   value = azurerm_virtual_network.vnet
 }
 
-output "vnet_subnet_ids" {
-  value = [for subnet in azurerm_virtual_network.vnet.subnet : subnet.id]
-}
+# output "vnet_subnet_ids" {
+#   value = [for subnet in azurerm_virtual_network.vnet.subnet : subnet.id]
+# }

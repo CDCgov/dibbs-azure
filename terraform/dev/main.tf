@@ -11,7 +11,8 @@ module "foundations" {
   project         = local.project
   env             = local.env
   location        = local.location
-  vnet_subnet_ids = module.networking.vnet_subnet_ids
+  ip_rules        = ["10.30.0.0/24"]
+  # vnet_subnet_ids = module.networking.vnet_subnet_ids
 }
 
 module "networking" {
