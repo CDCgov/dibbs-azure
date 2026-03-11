@@ -6,11 +6,11 @@ locals {
 }
 
 module "foundations" {
-  source   = "../resources/foundations"
-  team     = local.team
-  project  = local.project
-  env      = local.env
-  location = local.location
+  source          = "../resources/foundations"
+  team            = local.team
+  project         = local.project
+  env             = local.env
+  location        = local.location
   vnet_subnet_ids = module.networking.vnet_subnet_ids
 }
 
