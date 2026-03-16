@@ -1,0 +1,52 @@
+﻿Title,Column 1,Column 2,Column 3,Column 4
+Control,Recommendation Name,Fix,"Risk Level ","Customer responsibility "
+"AC.2.*.
+Additional assessments for AC-2 - Account Management",SQL servers should have an Azure Active Directory administrator provisioned,"To provision an Azure AD administrator for SQL server, see https://docs.microsoft.com/azure/sql-database/sql-database-aad-authentication-configure",High,Yes
+AC-2(7).Privileged User Accounts,SQL servers should have an Azure Active Directory administrator provisioned,"To provision an Azure AD administrator for SQL server, see https://docs.microsoft.com/azure/sql-database/sql-database-aad-authentication-configure",High,Yes
+"AC.3.*.
+Additional assessments for AC-3 - Access Enforcement",SQL servers should have an Azure Active Directory administrator provisioned,"To provision an Azure AD administrator for SQL server, see https://docs.microsoft.com/azure/sql-database/sql-database-aad-authentication-configure",High,Yes
+"IA.2.*.
+Additional assessments for IA-2 - Identification and Authentication (organizational Users)",SQL servers should have an Azure Active Directory administrator provisioned,"To provision an Azure AD administrator for SQL server, see https://docs.microsoft.com/azure/sql-database/sql-database-aad-authentication-configure",High,Yes
+"IA.4.*.
+Additional assessments for IA-4 - Identifier Management",SQL servers should have an Azure Active Directory administrator provisioned,"To provision an Azure AD administrator for SQL server, see https://docs.microsoft.com/azure/sql-database/sql-database-aad-authentication-configure",High,Yes
+,,,,
+"AC.17.*.
+Additional assessments for AC-17 - Remote Access",Private endpoint connections on Azure SQL Database should be enabled,"To enable Private Endpoint Connections:1. Open Azure SQL Database and browse to the server blade2. Navigate to Security --> Private endpoint connections blade via the navigation menu3. Select the ""+ Private Endpoint"" button4. Follow the instructions here: https://docs.microsoft.com/azure/azure-sql/database/private-endpoint-overview#how-to-set-up-private-link-for-azure-sql-database.",High,Yes
+AC-17(1).Monitoring and Control,Private endpoint connections on Azure SQL Database should be enabled,"To enforce secure communications for your storage accounts, add a private endpoint as described here: https://aka.ms/connectprivatelytostorageaccount.",High,Yes
+"AC.4.*.
+Additional assessments for AC-4 - Information Flow Enforcement",Private endpoint connections on Azure SQL Database should be enabled,"To enforce secure communications for your storage accounts, add a private endpoint as described here: https://aka.ms/connectprivatelytostorageaccount.",High,Yes
+"SC.7.*.
+Additional assessments for SC-7 - Boundary Protection",Private endpoint connections on Azure SQL Database should be enabled,"To enforce secure communications for your storage accounts, add a private endpoint as described here: https://aka.ms/connectprivatelytostorageaccount.",High,Yes
+,,,,
+"AC.17.*.
+Additional assessments for AC-17 - Remote Access",Storage account should use a private link connection,"To enforce secure communications for your storage accounts, add a private endpoint as described here: https://aka.ms/connectprivatelytostorageaccount.",High,Yes
+AC-17(1).Monitoring and Control,Storage account should use a private link connection,"To enforce secure communications for your storage accounts, add a private endpoint as described here: https://aka.ms/connectprivatelytostorageaccount.",High,Yes
+"AC.4.*.
+Additional assessments for AC-4 - Information Flow Enforcement",Storage account should use a private link connection,"To enforce secure communications for your storage accounts, add a private endpoint as described here: https://aka.ms/connectprivatelytostorageaccount.",High,Yes
+"SC.7.*.
+Additional assessments for SC-7 - Boundary Protection",Storage account should use a private link connection,"To enforce secure communications for your storage accounts, add a private endpoint as described here: https://aka.ms/connectprivatelytostorageaccount.",High,Yes
+SC-7(3).Access Points,Storage account should use a private link connection,"To enforce secure communications for your storage accounts, add a private endpoint as described here: https://aka.ms/connectprivatelytostorageaccount.",High,Yes
+,,,,
+"AC.4.*.
+Additional assessments for AC-4 - Information Flow Enforcement",Storage accounts should restrict network access using virtual network rules,"To protect your storage account from potential threats using virtual network rules:
+1. In the Azure portal, open your storage account.
+2. From the left sidebar, select 'Networking'.
+3. From the 'Allow access from' section, select 'Selected networks'.
+4. Add a Virtual network under the 'Virtual networks' section. Do not add allowed IP ranges/ or addresses in the firewall. This is to prevent public IPs from accessing your storage account. For details, see: https://aka.ms/storagenetworksecurity.",High,Yes
+"SC.7.*.
+Additional assessments for SC-7 - Boundary Protection",Storage accounts should restrict network access using virtual network rules,"To protect your storage account from potential threats using virtual network rules:
+1. In the Azure portal, open your storage account.
+2. From the left sidebar, select 'Networking'.
+3. From the 'Allow access from' section, select 'Selected networks'.
+4. Add a Virtual network under the 'Virtual networks' section. Do not add allowed IP ranges/ or addresses in the firewall. This is to prevent public IPs from accessing your storage account. For details, see: https://aka.ms/storagenetworksecurity.",High,Yes
+SC-7(3).Access Points,Storage accounts should restrict network access using virtual network rules,"To protect your storage account from potential threats using virtual network rules:
+1. In the Azure portal, open your storage account.
+2. From the left sidebar, select 'Networking'.
+3. From the 'Allow access from' section, select 'Selected networks'.
+4. Add a Virtual network under the 'Virtual networks' section. Do not add allowed IP ranges/ or addresses in the firewall. This is to prevent public IPs from accessing your storage account. For details, see: https://aka.ms/storagenetworksecurity.",High,Yes
+,,,,
+"AC.4.*.
+Additional assessments for AC-4 - Information Flow Enforcement",Public network access on Azure SQL Database should be disabled,To disable Public Network Access:1. Open Azure SQL Database and browse to the server blade2. Navigate to Security --> Firewalls and virtual networks blade via the navigation menu on the left.3. Select Deny Public Network Access control and change the value to Yes.,High,Yes
+"SC.7.*.
+Additional assessments for SC-7 - Boundary Protection",Public network access on Azure SQL Database should be disabled,To disable Public Network Access:1. Open Azure SQL Database and browse to the server blade2. Navigate to Security --> Firewalls and virtual networks blade via the navigation menu on the left.3. Select Deny Public Network Access control and change the value to Yes.,High,Yes
+SC-7(3).Access Points,Public network access on Azure SQL Database should be disabled,To disable Public Network Access:1. Open Azure SQL Database and browse to the server blade2. Navigate to Security --> Firewalls and virtual networks blade via the navigation menu on the left.3. Select Deny Public Network Access control and change the value to Yes.,High,Yes
