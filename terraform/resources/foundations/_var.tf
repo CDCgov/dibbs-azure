@@ -23,3 +23,8 @@ variable "resource_group_name" {
   type        = string
   default     = null
 }
+
+variable "vnet_subnet_ids" {
+  description = "Subnet IDs for storage account network rules"
+  type        = list(string)
+}

@@ -29,6 +29,13 @@ resource "azurerm_storage_account" "app" {
   min_tls_version                  = "TLS1_2"
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
+
+  network_rules {
+    default_action             = "Deny"
+    virtual_network_subnet_ids = var.vnet_subnet_ids
+    bypass                     = ["AzureServices"]
+    # ip_rules = [] # To browse or manage storage data directly in the Azure Portal,add your local machine's public IP address to the ip_rules list.
+  }
 }
 
 resource "azurerm_storage_container" "ecr_data" {

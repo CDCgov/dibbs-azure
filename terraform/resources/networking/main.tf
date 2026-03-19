@@ -27,7 +27,8 @@ resource "azurerm_subnet" "aca" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.aca_subnet_address_prefixes
   service_endpoints = [
-    "Microsoft.KeyVault"
+    "Microsoft.KeyVault",
+    "Microsoft.Storage"
   ]
 
   delegation {

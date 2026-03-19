@@ -6,11 +6,12 @@ locals {
 }
 
 module "foundations" {
-  source   = "../resources/foundations"
-  team     = local.team
-  project  = local.project
-  env      = local.env
-  location = local.location
+  source          = "../resources/foundations"
+  team            = local.team
+  project         = local.project
+  env             = local.env
+  location        = local.location
+  vnet_subnet_ids = module.networking.vnet_subnet_ids
 }
 
 module "networking" {
@@ -45,7 +46,7 @@ module "container_apps" {
   acr_username = module.foundations.acr_admin_username
   acr_password = module.foundations.acr_admin_password
 
-  dibbs_version = "8.5.0"
+  dibbs_version = "8.6.0"
 
   azure_storage_connection_string = module.foundations.azure_storage_connection_string
   azure_container_name            = module.foundations.azure_container_name
