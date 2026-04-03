@@ -22,9 +22,9 @@ The target Azure subscription must have the following:
 * Active Azure resource providers for the services being deployed (e.g., Azure App Gateway, Azure Container Apps, etc.)
 
 # Deployment
-User-modifiable code exists in the `implementation` folder. Be sure to review `_config.tf` and `main.tf` for variables and inputs that can be customized to fit your installation.
+User-modifiable code exists in the `dev` folder. Be sure to review `_config.tf` and `main.tf` for variables and inputs that can be customized to fit your installation.
 
-Before you deploy, ensure that you have the prerequisites installed and configured. Then, run the following commands in the `implementation` folder:
+Before you deploy, ensure that you have the prerequisites installed and configured. Then, run the following commands in the `dev` folder:
     
 ```bash
 terraform init
