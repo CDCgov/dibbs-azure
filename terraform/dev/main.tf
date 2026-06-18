@@ -59,7 +59,19 @@ module "container_apps" {
 -----END PUBLIC KEY-----
           EOT
 
+  jwt_public_key = <<EOT
+-----BEGIN PUBLIC KEY-----
+<UPDATE_CONTENTS>
+-----END PUBLIC KEY-----
+          EOT
+
   nbs_api_public_key = <<EOT
+-----BEGIN PUBLIC KEY-----
+<UPDATE_CONTENTS>
+-----END PUBLIC KEY-----
+          EOT
+
+  jwt_api_public_key = <<EOT
 -----BEGIN PUBLIC KEY-----
 <UPDATE_CONTENTS>
 -----END PUBLIC KEY-----

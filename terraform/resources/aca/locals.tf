@@ -127,8 +127,16 @@ locals {
           value = var.nbs_api_public_key
         },
         {
+          name  = "JWT_API_PUB_KEY",
+          value = var.jwt_api_public_key
+        },
+        {
           name  = "NBS_PUB_KEY",
           value = var.nbs_public_key
+        },
+        {
+          name  = "JWT_PUB_KEY",
+          value = var.jwt_public_key
         },
         {
           name  = "SQL_SERVER_HOST",
