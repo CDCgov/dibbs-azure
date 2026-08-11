@@ -1,0 +1,30 @@
+name: Checkov Security Scan
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions: read-all
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checkov:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@358405ddafaa109ad35d3d607bbc7cf933c742d9
+        with:
+          directory: .
+          quiet: true
+          compact: true
+          output_format: cli
+          soft_fail: false
