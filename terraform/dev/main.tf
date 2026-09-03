@@ -53,13 +53,13 @@ module "container_apps" {
 
   ecr_viewer_mode = "AZURE_SQLSERVER_DUAL"
 
-  nbs_public_key = <<EOT
+  jwt_public_key = <<EOT
 -----BEGIN PUBLIC KEY-----
 <UPDATE_CONTENTS>
 -----END PUBLIC KEY-----
           EOT
 
-  nbs_api_public_key = <<EOT
+  jwt_api_public_key = <<EOT
 -----BEGIN PUBLIC KEY-----
 <UPDATE_CONTENTS>
 -----END PUBLIC KEY-----

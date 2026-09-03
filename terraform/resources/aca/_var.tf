@@ -89,14 +89,14 @@ variable "azure_container_name" {
   type        = string
 }
 
-variable "nbs_api_public_key" {
-  description = "Public key to use for managing API connections to NBS"
+variable "jwt_api_public_key" {
+  description = "Public key used for JWT API verification; replaces NBS_API_PUB_KEY"
   type        = string
   default     = ""
 }
 
-variable "nbs_public_key" {
-  description = "Public key to use for managing connections to NBS"
+variable "jwt_public_key" {
+  description = "Public key used for JWT verification; replaces NBS_PUB_KEY"
   type        = string
   default     = ""
 }
